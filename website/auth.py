@@ -15,4 +15,4 @@ def register():
 
 @auth.route('/my-account')
 def my_account():
-    pass
+    return flask.render_template("my_account.html")

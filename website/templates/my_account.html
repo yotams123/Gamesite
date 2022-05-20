@@ -1,0 +1,157 @@
+{% extends "base.html" %}
+
+{% block title %} My Account {% endblock %}
+
+{% block head_content %}
+    <script>
+        function checkForm() {
+            let flag = true;
+            flag =
+                checkFname() &&
+                checkLname() &&
+                checkUname() &&
+                checkPass() &&
+                checkEmail();
+            return flag;
+        }
+
+
+        function checkFname() {
+            const fname = document.getElementById("firstname").value;
+            let flag = true;
+            if (fname != "") {
+                if (fname[0] != fname[0].toUpperCase()) {
+                    alert("First name must start with a capital letter");
+                    flag = false;
+                }
+                const letters = /^[A-Za-z\s]+$/;
+                if (!(fname.match(letters))) {
+                    flag = false;
+                    window.alert("First name cannot contain spaces, numbers or special characters");
+                }
+            }
+            return flag;
+        }
+
+
+        function checkLname() {
+            const letters = /^[A-Za-z\s]+$/;
+            let flag = true;
+            const lname = document.getElementById("lastname").value;
+            if (lname != "")
+            {
+                if(lname[0] != lname[0].toUpperCase()) {
+                    window.alert("Last name must start with a capital letter");
+                    flag = false;
+                }
+                if (!lname.match(letters)) {
+                    flag = false;
+                    window.alert("Last name cannot contain spaces or special characters");
+                }
+            }
+
+            return flag;
+        }
+
+
+        function checkUname() {
+            let flag = true;
+            const uname = document.getElementById("newuser").value;
+            if (uname != "") {
+                if (uname.length < 4) {
+                    flag = false;
+                    window.alert("Username must be at least 4 characters long");
+                }
+                const nums_letters = /^[A-Za-z0-9]+$/;
+                if (!uname.match(nums_letters)) {
+                    flag = false;
+                    window.alert("Username must include only numbers and letters");
+                }
+            }
+            return flag;
+        }
+
+
+        function checkPass() {
+            let flag = true;
+            const rules = [
+                /[0-9]/,
+                /[a-z]/,
+                /[A-Z]/,
+                /[{!@#$%^&*}<>]/
+            ];
+            const pass = document.getElementById("newpass").value;
+            if (pass != "") {
+                if (pass.length < 6) {
+                    flag = false;
+                    window.alert("Password must contain at least 6 characters");
+                }
+                let passflag = false;
+                for (let i = 0; i < rules.length; i++) {
+                    if (!rules[i].test(pass)) {
+                        flag = false;
+                        passflag = true;
+                    }
+                }
+                if (passflag == true) {
+                    window.alert("password must contain at least one capital letter, a lowercase letter, a number, and at least one special character !@#$%^&*");
+                }
+                const passcheck = document.getElementById("confirmpass").value;
+                if (passcheck != pass) {
+                    window.alert("Password confirmation field must be identical to password");
+                    flag = false;
+                }
+            }
+            return flag;
+        }
+
+
+        function checkEmail() {
+            let flag = true;
+            const letters = /^[A-Za-z\s]+$/;
+            const email = document.getElementById("mail").value;
+            if (email != "") {
+                const mailformat = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
+                if (!email.match(mailformat)) {
+                    window.alert("Email must start with a letter, contain an @ character and include a valid domain");
+                    flag = false;
+                }
+                const fmail = email[0];
+                if (!fmail.match(letters)) {
+                    window.alert("Email address must start with a letter");
+                    flag = false;
+                }
+            }
+            return flag
+        }
+
+    </script>
+{% endblock %}
+
+{% block body_content %}
+<form id="update_form" name="update_form" action="" onsubmit="return checkForm()">
+  <h2 id="form_title"> Fill this form with new info to update account. All fields are optional.
+    To keep a field the same as it was, leave empty</h2>
+  <p id="form_body">
+    First Name: <input type="text" id="firstname" name="firstname" /><br />
+    Last Name: <input type="text" id="lastname" name="lastname"/><br />
+    Username: <input type="text" id="newuser" name="newuser" /><br />
+    Current Password: <input type="password" id="currpass" name="currpass" /> <br />
+    New Password: <input type="password" id="newpass" name="newpass" /> <br />
+    Confirm new password: <input type="password" id="confirmpass" name="confirmpass" /><br />
+    Email     : <input type="email" id="mail"  name="mail"/><br />
+    Birthday: <input type="date" id="birthday" name="birthday"/><br />
+    Location: <input list="locs" id="loc" name="loc"/> <br />
+    <datalist id="locs">
+      <option value="Africa"></option>
+      <option value="Asia"></option>
+      <option value="Australia and Oceania"></option>
+      <option value="Europe"></option>
+      <option value="North America"></option>
+      <option value="South America"></option>
+    </datalist>
+    Gender: Male<input type="radio" name="gender" id="male" value="male" />     Female<input type="radio" name="gender" id="female" value="female" /> <br />
+    <input type="submit" id="submit" name="submit" value="Submit"/>
+  </p>
+</form>
+{% endblock %}
