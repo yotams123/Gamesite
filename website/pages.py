@@ -4,7 +4,7 @@ pages = flask.Blueprint("pages", __name__)
 
 @pages.route('/')
 def home():
-    pass
+    return flask.render_template("home.html")
 
 @pages.route('/admin')
 def admin():
