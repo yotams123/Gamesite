@@ -3,6 +3,10 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport"  content="width=device-width, initial-scale=1" />
+    <div id="head-content">
+        {% block head_content %}
+        {% endblock %}
+    </div>
     <link
           rel="stylesheet"
           href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
@@ -29,7 +33,10 @@
             </div>
         </div>
     </nav>
-
+    <div id="body-content">
+        {%block body_content %}
+        {% endblock %}
+    </div>
     <script
             src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
             integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"

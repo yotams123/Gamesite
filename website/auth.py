@@ -2,13 +2,16 @@ import flask
 
 auth = flask.Blueprint('auth', __name__)
 
+
 @auth.route('/login')
 def login():
-    pass
+    return flask.render_template("login.html")
+
 
 @auth.route('/register')
 def register():
-    pass
+    return flask.render_template("register.html")
+
 
 @auth.route('/my-account')
 def my_account():

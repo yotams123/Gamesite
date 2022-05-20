@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+{% block title %} Register {% endblock %}
+
+{% block head_content %}
+
+{% endblock %}
+
+{% block body_content %}
+<p id="main-form">
+    First Name: <input type="text" id="firstname" name="firstname" /><br />
+    Last Name: <input type="text" id="lastname" name="lastname"/><br />
+    Username  : <input type="text" id="newuser" name="newuser"/><br />
+    Password  : <input type="password" id="newpass" name="newpass"/> <br />
+    Confirm Password: <input type="password" id="passconfirm" name="passconfirm" /> <br />
+    Email     : <input type="email" id="mail"  name="mail"/><br />
+    Birthday: <input type="date" id="birthday" name="birthday"/><br />
+    Location: <input list="locs" id="loc" name="loc"/> <br />
+    <datalist id="locs">
+        <option value="Africa"></option>
+        <option value="Asia"></option>
+        <option value="Australia or Oceania"></option>
+        <option value="Europe"></option>
+        <option value="North America"></option>
+        <option value="South America"></option>
+    </datalist>
+    Gender:      Male<input type="radio" name="gender" id="male" value="male" />    Female<input type="radio" name="gender" id="female" value="female" /><br />cd <i></i>
+    <input type="submit" id="submit" name="submit" value="submit"/>
+</p>
+{% endblock %}
