@@ -3,10 +3,6 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport"  content="width=device-width, initial-scale=1" />
-    <div id="head-content">
-        {% block head_content %}
-        {% endblock %}
-    </div>
     <link
           rel="stylesheet"
           href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
@@ -18,7 +14,12 @@
           href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css"
           crossorigin="anonymous"
      />
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
     <title>{% block title %} {% endblock %}</title>
+    <div id="head-content">
+        {% block head_content %}
+        {% endblock %}
+    </div>
 </head>
 <body>
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
