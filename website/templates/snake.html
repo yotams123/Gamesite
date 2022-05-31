@@ -1,9 +1,35 @@
-{% extends 'base.html' %}
+{% extends "base.html" %}
 
 {% block title %} Snake {% endblock %}
 
 {% block head_content %}
+<style>
+    body {
+        background: rgb(212, 211, 211);
+    }
+
+    .grid{
+        border: 1px solid red;
+        display: flex;
+        flex-wrap: wrap;
+    }
+
+    .grid div{
+        width: 10%;
+        height: 10%;
+    }
+
+    .snake {
+        background: blue
+    }
+    
+</style>
 {% endblock %}
 
 {% block body_content %}
+    <div class="scoreDisplay"></div>
+    <div class="grid"></div>
+    <div class="popup">
+        <button class="playAgain">play again</button>
+    </div>
 {% endblock %}
