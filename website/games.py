@@ -5,7 +5,7 @@ games = flask.Blueprint("games", __name__)
 
 @games.route('/snake')
 def snake():
-    pass
+    flask.render_template("snake.html")
 
 
 @games.route('/pong')
