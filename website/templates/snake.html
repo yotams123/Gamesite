@@ -5,20 +5,22 @@
 {% block head_content %}
 <style>
     body {
-        background: rgb(212, 211, 211);
+        background-color: #574B49;
     }
 
     .grid{
-        border: 1px solid red;
-        width: 70%;
-        height: 70%;
+        border: ;
+        width: 50%;
+        height: 35em;
+        margin: 0 auto;
         display: flex;
         flex-wrap: wrap;
+        background: #0000b1;
     }
 
     .grid div{
-        width: 10%;
-        height: 10%;
+        width: 5%;
+        height: 5%;
     }
 
     .snake {
@@ -42,105 +44,123 @@
     }
 
 </style>
-<script type="text/javascript">
-    const grid = document.querySelector(".grid");
-    const popup = document.querySelector(".popup");
-    const playAgain = document.querySelector(".playAgain");
-    const scoreDisplay = document.querySelector(".scoreDisplay");
-    const width = 10;
-    const height = 10;
-    let currentIndex = 0;
-    let appleIndex = 0;
-    let currentSnake = [2, 1, 0];
-    let direction = 1;
-    let score = 0;
-    let speed = 0.8;
-    let intervalTime = 0;
-    let interval = 0;
 
-    document.addEventListener("DOMContentLoaded", function(width, height) {
-        document.addEventListener("keyup", control);
-        createBoard(width, height);
-        startGame();
-        playAgain.addEventListener("click", replay);
-    });
-
-    let createBoard = (width, height) => {
-        popup.style.display = "none";
-        for (let i = 0; i< height * width; i++){
-            let div = document.createElement("div");
-            grid.appendChild(div);
-        }
-    }
-
-    let startGame = () => {
-        let squares = document.querySelectorAll(".grid div");
-        randomApple(squares);
-        direction = 1;
-        scoreDisplay.innerHtml = score;
-        intervalTime = 1000;
-        currentSnake = [2, 1, 0];
-        currentIndex = 0;
-        currentSnake.foreach((index) => squares[index].classList.add("snake"));
-        interval = setInterval(moveOutcome, intervalTime);
-    }
-
-    let moveOutcome = () => {
-        let squares = document.querySelectorAll(".grid div");
-        if (checkForHits(squares)){
-            alert("You hit something!");
-            popup.style.display = "flex";
-            return clearInterval(interval);
-        } else {
-            moveSnake(squares);
-        }
-    }
-
-    let moveSnake = () => {
-        const squares = document.querySelector All(".grid div");
-
-        let tail = currentSnake.pop();
-        squares[tail].classList.remove("snake");
-        currentSnake.unshift(currentSnake(0) + direction);
-        squares[currentSnake[0]].classList.add("snake");
-        eatApple(squares, tail);
-    }
-
-    function checkForHits(squares){
-        return (currentSnake[0] + direction >= width*height) ||
-           (currentSnake[0] % width == width - 1 && direction = 1) ||
-           (currentSnake[0] % width == 0 && direction = -1) ||
-           squares[currentSnake[0]].classList.contains("snake");
-    }
-
-    function eatApple(squares, tail){
-        if (squares[0].classList.contains("apple")){
-            squares[currentSnake[0]].classList.remove("apple");
-            squares[tail].classList.add("snake");
-            currentSnake.push(tail);
-            randomApple(squares);
-            score ++;
-            scoreDisplay.textContent = score;
-            clearInterval(interval);
-            intervalTime *= speed;
-            interval = setInterval(moveOutcome, intervalTime);
-        }
-    }
-
-    function randomApple(squares){
-        do{
-            appleIndex = Math.floor(Math.random() * squares.length);
-        } while(squares[appleIndex].classList.contains("snake"));
-
-        squares[appleIndex].classList.add("apple");
-    }
-</script>
 {% endblock %}
 
 {% block body_content %}
+
     <div class="scoreDisplay"></div>
     <div class="grid"></div>
     <div class="popup">
         <button class="playAgain">play again</button>
     </div>
+
+    <script type="text/javascript">
+        const grid = document.querySelector(".grid");
+        const popup = document.querySelector(".popup");
+        const playAgain = document.querySelector(".playAgain");
+        const scoreDisplay = document.querySelector(".scoreDisplay");
+        const width = 20;
+        const height = 20;
+        let currentIndex = 0;
+        let appleIndex = 0;
+        let currentSnake = [2, 1, 0];
+        let direction = 1;
+        let score = 0;
+        let speed = 0.8;
+        let intervalTime = 0;
+        let interval = 0;
+
+        document.addEventListener("DOMContentLoaded", function() {
+            document.addEventListener("keyup", control);
+            createBoard(width, height);
+            startGame();
+            playAgain.addEventListener("click", replay);
+        });
+
+        let createBoard = (width, height) => {
+            popup.style.display = "none";
+            for (let i = 0; i< height * width; i++){
+                let div = document.createElement("div");
+                grid.appendChild(div);
+            }
+        }
+
+        let startGame = () => {
+            let squares = document.querySelectorAll(".grid div");
+            currentSnake = [2, 1, 0];
+            currentSnake.forEach((index) => squares[index].classList.add("snake"));
+            randomApple(squares);
+            direction = 1;
+            scoreDisplay.innerHtml = score;
+            intervalTime = 1000;
+            currentIndex = 0;
+            interval = setInterval(moveOutcome, intervalTime);
+        }
+
+        let moveOutcome = () => {
+            let squares = document.querySelectorAll(".grid div");
+            if (checkForHits(squares)){
+                alert("You hit something!");
+                popup.style.display = "flex";
+                return clearInterval(interval);
+            } else {
+                moveSnake(squares);
+            }
+        }
+
+        let moveSnake = () => {
+            const squares = document.querySelectorAll(".grid div");
+
+            let tail = currentSnake.pop();
+            squares[tail].classList.remove("snake");
+            currentSnake.unshift(currentSnake(0) + direction);
+            squares[currentSnake[0]].classList.add("snake");
+            eatApple(squares, tail);
+        }
+
+        function checkForHits(squares){
+            return (currentSnake[0] + direction >= width*height) ||
+               (currentSnake[0] % width == width - 1 && direction == 1) ||
+               (currentSnake[0] % width == 0 && direction == -1) ||
+               squares[currentSnake[0]].classList.contains("snake");
+        }
+
+        function eatApple(squares, tail){
+            if (squares[0].classList.contains("apple")){
+                squares[currentSnake[0]].classList.remove("apple");
+                squares[tail].classList.add("snake");
+                currentSnake.push(tail);
+                randomApple(squares);
+                score ++;
+                scoreDisplay.textContent = score;
+                clearInterval(interval);
+                intervalTime *= speed;
+                interval = setInterval(moveOutcome, intervalTime);
+            }
+        }
+
+        function randomApple(squares){
+            do{
+                appleIndex = Math.floor(Math.random() * squares.length);
+            } while(squares[appleIndex].classList.contains("snake"));
+            console.log("appleindex:" + appleIndex);
+            squares[appleIndex].classList.add("apple");
+        }
+
+        let control = e => {
+            if (e.keycode === 37){
+                direction = -1; // left
+            }
+            if (e.keycode === 38){
+                direction = -width; // up
+            }
+            if (e.keycode === 39){
+                direction = 1; // right
+            }
+            if (e.keycode === 40){
+                direction = width; // down
+            }
+        }
+    </script>
 {% endblock %}
