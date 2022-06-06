@@ -10,5 +10,5 @@ def snake():
 
 @games.route('/pong')
 def pong():
-    pass
+    return flask.render_template("pong.html")
 
