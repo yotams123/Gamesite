@@ -46,16 +46,55 @@
             canvas.width = 0.6 * window.innerWidth;
             canvas.height =  0.7 * window.innerHeight;
             let drawer = canvas.getContext("2d");
-            let width = parseInt(getComputedStyle(canvas).width);
-            let height = parseInt(getComputedStyle(canvas).height);
+            let canvasWidth = parseInt(getComputedStyle(canvas).width);
+            let canvasHeight = parseInt(getComputedStyle(canvas).height);
             drawer.fillStyle = "#00d9f0";
-            drawer.fillRect(5, 0, width/80, height);
-            let paddleHeight = height/7;
-            console.log(height)
-            console.log(height/2 +paddleHeight/2);
-            console.log(height/2 - paddleHeight/2);
-            drawer.fillRect(width * 79/80 - 5, height/2 - paddleHeight/2, width/80, paddleHeight);
+
+            let wallPadding = 5;
+            let paddleWidth = canvasWidth/80;
+            drawer.fillRect(wallPadding, 0, paddleWidth, canvasHeight);
+
+            let paddleLength = canvasHeight/7;
+            let paddleX = canvasWidth - paddleWidth - wallPadding;
+            let startY = canvasHeight/2 - paddleLength/2;
+
+            let paddle = new Paddle(paddleX, startY, paddleWidth, paddleLength, canvasHeight, canvasWidth, drawer, canvas);
+
+            let interval = setInterval(paddle.updateDisplay, 20);
+
+            document.addEventListener("keydown", paddle.move);
         })();
+
+
+        function Paddle(paddleX, startY, paddleWidth, paddleLength, canvasHeight, canvasWidth, drawer, canvas){
+            drawer.fillRect(paddleX, startY, paddleWidth, paddleLength);
+            this.positionY = startY;
+            this.paddleLength = paddleLength;
+            this.paddleX = paddleX;
+            this.paddleWidth = paddleWidth;
+
+            this.speed = 5;
+            this.canvasHeight = canvasHeight;
+
+            this.move = e => {
+                keyId = e.charCode? e.charCode: e.which? e.which: e.keycode;
+                if (keyId == 38){   // up
+                    drawer.clearRect(this.paddleX, this.positionY, this.paddleWidth, this.paddleLength);
+                    parseInt(this.positionY)> parseInt(this.speed)? this.positionY -= parseInt(this.speed): this.positionY=0;
+                }
+                if (keyId == 40){   // down
+                    drawer.clearRect(this.paddleX, this.positionY, this.paddleWidth, this.paddleLength);
+                    parseInt(this.positionY) + parseInt(this.paddleLength) + parseInt(this.speed) < parseInt(canvasHeight)? this.positionY += this.speed: this.positionY = parseInt(canvasHeight) - parseInt(this.length);
+                    console.log(this.positionY);
+                }
+            }
+
+            this.updateDisplay = () =>
+            {
+                drawer.fillRect(this.paddleX, this.positionY, this.paddleWidth, this.paddleLength);
+            }
+        }
+
     </script>
 {% endblock %}
 
