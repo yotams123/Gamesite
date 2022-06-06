@@ -3,8 +3,59 @@
 {% block title %} Pong {% endblock %}
 
 {% block head_content %}
+    <style>
+        canvas{
+            border: 1px solid red;
+            position: absolute;
+            left: 30%;
+            background-color: #3cb371;
+        }
+
+        body{
+            background-color: #574B49;
+        }
+
+        h1{
+            font-family: "courier new";
+            color: red;
+            text-align: center;
+            width: 27%;
+        }
+
+        h3{
+            float: left;
+            position: absolute;
+            left: 3%;
+            color: red;
+            font-family: "courier new";
+            font-weight: bold;
+        }
+
+    </style>
 {% endblock %}
 
 {% block body_content %}
+    <h1><strong>Pong</strong></h1>
+    <h3 class="scoreDisplay">Your Current Score: 0</h3>
+    <canvas id="canvas">
+    </canvas>
+    <script>
+
+        let startGame = (() => {
+            let canvas = document.getElementById("canvas");
+            canvas.width = 0.6 * window.innerWidth;
+            canvas.height =  0.7 * window.innerHeight;
+            let drawer = canvas.getContext("2d");
+            let width = parseInt(getComputedStyle(canvas).width);
+            let height = parseInt(getComputedStyle(canvas).height);
+            drawer.fillStyle = "#00d9f0";
+            drawer.fillRect(5, 0, width/80, height);
+            let paddleHeight = height/7;
+            console.log(height)
+            console.log(height/2 +paddleHeight/2);
+            console.log(height/2 - paddleHeight/2);
+            drawer.fillRect(width * 79/80 - 5, height/2 - paddleHeight/2, width/80, paddleHeight);
+        })();
+    </script>
 {% endblock %}
 
