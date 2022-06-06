@@ -11,9 +11,10 @@
     .grid{
         border: 1px solid red;
         width: 50%;
-        height: 35em;
-        position: relative;
-        left: 5%;
+        height: 30em;
+        position: absolute;
+        left: 28%;
+        margin: auto 0;
         display: flex;
         flex-wrap: wrap;
         background: #0000b1;
@@ -36,7 +37,7 @@
         font-family: "courier new";
         color: red;
         text-align: center;
-        width: 80%;
+        width: 27%;
     }
 
     h3{
@@ -50,7 +51,8 @@
 {% endblock %}
 
 {% block body_content %}
-    <h3 class="scoreDisplay">Your Current Score: 0</h3><h1><strong>Snake</strong></h1>
+    <h1><strong>Snake</strong></h1>
+    <h3 class="scoreDisplay">Your Current Score: 0</h3>
     <div class="grid"></div>
 
 
@@ -81,6 +83,12 @@
                 let div = document.createElement("div");
                 grid.appendChild(div);
             }
+            document.querySelectorAll(".grid div").forEach(element => {
+            element.style.height = (100/height) + "%";
+            element.style.width = (100/width) + "%";
+            });
+            console.log("height: " + document.querySelectorAll(".grid div")[0].style.height);
+            console.log("width: " + document.querySelectorAll(".grid div")[0].style.width);
         }
 
         let startGame = () => {
@@ -147,7 +155,6 @@
 
         let control = e => {
             let keyId = e.charCode? e.charCode: e.which? e.which : e.keycode;
-            console.log(keyId);
             if (keyId == 37){
                 direction = -1; // left
             }
