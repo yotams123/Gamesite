@@ -81,7 +81,7 @@
 
             this.move = () =>
             {
-                this.drawer.clearRect(this.posX - 1, this.posY - 1, this.ballWidth +1, this.ballHeight +1);
+                this.drawer.clearRect(this.posX - 1, this.posY - 1, this.ballWidth + 2, this.ballHeight + 2);
                 this.posX += this.speedX;
                 this.posY += this.speedY;
                 this.redraw();
