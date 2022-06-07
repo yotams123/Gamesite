@@ -65,8 +65,12 @@
             document.addEventListener("keydown", paddle.move);
         })();
 
+        let ball = () => {
+            this.color = "#94002b"
+            thi
+        }
 
-        function Paddle(paddleX, startY, paddleWidth, paddleLength, canvasHeight, canvasWidth, drawer, canvas){
+        function Paddle(paddleX, startY, paddleWidth, paddleLength, canvasHeight, canvasWidth, drawer){
             drawer.fillRect(paddleX, startY, paddleWidth, paddleLength);
             this.positionY = startY;
             this.paddleLength = paddleLength;
@@ -79,13 +83,12 @@
             this.move = e => {
                 keyId = e.charCode? e.charCode: e.which? e.which: e.keycode;
                 if (keyId == 38){   // up
-                    drawer.clearRect(this.paddleX, this.positionY, this.paddleWidth, this.paddleLength);
+                    drawer.clearRect(this.paddleX - 5, this.positionY - 5, this.paddleWidth + 10, this.paddleLength + 10);
                     parseInt(this.positionY)> parseInt(this.speed)? this.positionY -= parseInt(this.speed): this.positionY=0;
                 }
                 if (keyId == 40){   // down
-                    drawer.clearRect(this.paddleX, this.positionY, this.paddleWidth, this.paddleLength);
-                    parseInt(this.positionY) + parseInt(this.paddleLength) + parseInt(this.speed) < parseInt(canvasHeight)? this.positionY += this.speed: this.positionY = parseInt(canvasHeight) - parseInt(this.length);
-                    console.log(this.positionY);
+                    drawer.clearRect(this.paddleX - 5, this.positionY - 5, this.paddleWidth + 10, this.paddleLength + 10);
+                    this.positionY + this.speed < this.canvasHeight - this.paddleLength? this.positionY += this.speed: this.positionY = canvasHeight - this.paddleLength;
                 }
             }
 
