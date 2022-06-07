@@ -48,30 +48,61 @@
             let drawer = canvas.getContext("2d");
             let canvasWidth = parseInt(getComputedStyle(canvas).width);
             let canvasHeight = parseInt(getComputedStyle(canvas).height);
-            drawer.fillStyle = "#00d9f0";
+            let rectColor = "#00d9f0";
+            drawer.fillStyle = rectColor;
 
             let wallPadding = 5;
             let paddleWidth = canvasWidth/80;
-            drawer.fillRect(wallPadding, 0, paddleWidth, canvasHeight);
 
             let paddleLength = canvasHeight/4;
             let paddleX = canvasWidth - paddleWidth - wallPadding;
             let startY = canvasHeight/2 - paddleLength/2;
 
-            let paddle = new Paddle(paddleX, startY, paddleWidth, paddleLength, canvasHeight, canvasWidth, drawer, canvas);
+            let ball = new Ball(canvasWidth, canvasHeight, drawer);
+            let paddle = new Paddle(paddleX, startY, paddleWidth, paddleLength, canvasHeight, canvasWidth, drawer, rectColor, ball);
+            let wall = new Paddle(5, 0, paddleWidth, canvasHeight, canvasHeight, canvasWidth, drawer, rectColor);
 
             let interval = setInterval(paddle.updateDisplay, 20);
 
             document.addEventListener("keydown", paddle.move);
         })();
 
-        let ball = () => {
+        function Ball(canvasWidth, canvasHeight, drawer) {
             this.color = "#94002b"
-            thi
+            this.drawer = drawer;
+
+            this.speedX = 1;
+            this.speedY = 0;
+            this.ballWidth = 2cd 0;
+            this.ballHeight = 20;
+
+            this.posX = (canvasWidth - this.ballWidth)/2;
+            this.posY = (canvasHeight - this.ballHeight)/2;
+
+            this.move = () =>
+            {
+                this.drawer.clearRect(this.posX, this.posY, this.ballWidth, this.ballHeight);
+                this.posX += this.speedX;
+                this.posY += this.speedY;
+                this.redraw();
+            }
+
+            this.collision = paddle =>
+            {
+                this.speedX = -this.speedX;
+                this.speedY += paddle.speed;
+            }
+
+            this.redraw = () => {
+                this.drawer.fillStyle = this.color;
+                this.drawer.fillRect(this.posX, this.posY, this.ballWidth, this.ballHeight);
+            }
         }
 
-        function Paddle(paddleX, startY, paddleWidth, paddleLength, canvasHeight, canvasWidth, drawer){
-            drawer.fillRect(paddleX, startY, paddleWidth, paddleLength);
+        function Paddle(paddleX, startY, paddleWidth, paddleLength, canvasHeight, canvasWidth, drawer, rectColor, ball){
+            this.drawer = drawer;
+            this.drawer.fillRect(paddleX, startY, paddleWidth, paddleLength);
+
             this.positionY = startY;
             this.paddleLength = paddleLength;
             this.paddleX = paddleX;
@@ -80,21 +111,25 @@
             this.speed = 5;
             this.canvasHeight = canvasHeight;
 
+            this.ball = ball;
+
             this.move = e => {
                 keyId = e.charCode? e.charCode: e.which? e.which: e.keycode;
                 if (keyId == 38){   // up
-                    drawer.clearRect(this.paddleX - 5, this.positionY - 5, this.paddleWidth + 10, this.paddleLength + 10);
+                    this.drawer.clearRect(this.paddleX - 5, this.positionY - 5, this.paddleWidth + 10, this.paddleLength + 10);
                     parseInt(this.positionY)> parseInt(this.speed)? this.positionY -= parseInt(this.speed): this.positionY=0;
                 }
                 if (keyId == 40){   // down
-                    drawer.clearRect(this.paddleX - 5, this.positionY - 5, this.paddleWidth + 10, this.paddleLength + 10);
+                    this.drawer.clearRect(this.paddleX - 5, this.positionY - 5, this.paddleWidth + 10, this.paddleLength + 10);
                     this.positionY + this.speed < this.canvasHeight - this.paddleLength? this.positionY += this.speed: this.positionY = canvasHeight - this.paddleLength;
                 }
             }
 
             this.updateDisplay = () =>
             {
-                drawer.fillRect(this.paddleX, this.positionY, this.paddleWidth, this.paddleLength);
+                this.drawer.fillRect(this.paddleX, this.positionY, this.paddleWidth, this.paddleLength);
+                this.ball.move();
+                this.drawer.fillStyle = rectColor;
             }
         }
 
