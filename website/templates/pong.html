@@ -139,8 +139,6 @@
                     this.positionY = 0;
                 } else if (this.speed > 0){
                     this.positionY = this.canvasHeight - this.paddleLength;
-                } else {
-                    this.positionY = this.positionY;
                 }
             }
 
@@ -157,7 +155,7 @@
                 this.ball.move();
                 this.drawer.fillStyle = rectColor;
 
-                if (Math.floor(this.ball.posX + this.ball.ballWidth) == Math.floor(this.paddleX) && this.ball.posY + this.ball.ballHeight > this.positionY && this.positionY + this.paddleLength > this.ball.posY ){  // any part of the ball hits any part of the paddle
+                if (Math.floor(this.ball.posX + this.ball.ballWidth) > Math.floor(this.paddleX) && this.ball.posY + this.ball.ballHeight > this.positionY && this.positionY + this.paddleLength > this.ball.posY ){  // any part of the ball hits any part of the paddle
                     this.ball.collision(this);
                 }
                 if (Math.floor(this.ball.posX) <= Math.floor(this.wall.paddleX + this.wall.paddleWidth)){
