@@ -71,16 +71,21 @@
             this.color = "#94002b"
             this.drawer = drawer;
 
-            this.speedX = 1;
+            this.speedX = 3;
             this.speedY = 0;
             this.ballWidth = 0.02 * canvasWidth;
             this.ballHeight = 0.05*canvasHeight;
+            this.canvasHeight = canvasHeight;
 
             this.posX = (canvasWidth - this.ballWidth)/2;
             this.posY = (canvasHeight - this.ballHeight)/2;
 
             this.move = () =>
             {
+                if (Math.floor(this.posY) == 0 || Math.ceil(this.posY) == Math.ceil(this.canvasHeight - this.ballHeight)){
+                    this.speedY *= -1;
+                    console.log(this.speedY);
+                }
                 this.drawer.clearRect(this.posX - 1, this.posY - 1, this.ballWidth + 2, this.ballHeight + 2);
                 this.posX += this.speedX;
                 this.posY += this.speedY;
@@ -89,7 +94,6 @@
 
             this.collision = paddle =>
             {
-                console.log("h");
                 this.speedX = -this.speedX;
                 this.speedY += 0.2 * paddle.speed;
             }
@@ -138,7 +142,6 @@
                 } else {
                     this.positionY = this.positionY;
                 }
-
             }
 
             this.updateDisplay = () =>
