@@ -41,6 +41,8 @@
     </canvas>
     <script>
 
+        let interval;
+
         let startGame = (() => {
             let canvas = document.getElementById("canvas");
             canvas.width = 0.6 * window.innerWidth;
@@ -62,7 +64,7 @@
             let wall = new Paddle(5, 0, paddleWidth, canvasHeight, canvasHeight, canvasWidth, drawer, rectColor);
             let paddle = new Paddle(paddleX, startY, paddleWidth, paddleLength, canvasHeight, canvasWidth, drawer, rectColor, ball, wall);
 
-            let interval = setInterval(paddle.updateDisplay, 20);
+            interval = setInterval(paddle.runGame, 20);
 
             document.addEventListener("keydown", paddle.changeDirection);
         })();
@@ -115,6 +117,7 @@
 
             this.speed = 0;
             this.canvasHeight = canvasHeight;
+            this.canvasWidth = canvasWidth;
 
             this.ball = ball;
 
@@ -146,7 +149,7 @@
                 this.drawer.fillRect(this.paddleX, this.positionY, this.paddleWidth, this.paddleLength);
             }
 
-            this.updateDisplay = () =>
+            this.runGame = () =>
             {
                 this.move();
                 this.draw();
@@ -160,6 +163,11 @@
                 }
                 if (Math.floor(this.ball.posX) <= Math.floor(this.wall.paddleX + this.wall.paddleWidth)){
                     this.ball.collision(this.wall);
+                }
+
+                if (this.ball.posX >= this.canvasWidth){
+                    clearInterval(interval);
+                    alert("Game over!");
                 }
             }
         }
