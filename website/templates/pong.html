@@ -135,11 +135,11 @@
                 }
             }
 
-            this.draw = () => {
+            this.draw = function() {
                 this.canvas.drawer.fillRect(this.positionX, this.positionY, this.width, this.length);
             }
 
-            this.move = () => {
+            this.move = function() {
                 this.canvas.drawer.clearRect(this.positionX - 5, this.positionY - 5, this.width + 10, this.length + 10);
                 if (this.speed < 0 && this.positionY > -this.speed){
                     this.positionY += this.speed;
@@ -152,9 +152,9 @@
                 }
             }
 
-            this.runGame = () =>
+            this.runGame = function()
             {
-                this.move();
+                console.log(typeof this.move());
                 this.draw();
                 this.wall.draw();
 
