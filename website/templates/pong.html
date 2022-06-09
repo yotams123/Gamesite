@@ -56,7 +56,7 @@
             let ball = new Ball(canvas);
             let wall = new Paddle(5, 0, paddleWidth, canvas.height, canvas);
             let paddle = new Paddle(paddleX, startY, paddleWidth, paddleLength, canvas, ball, wall);
-
+            let b2 = new Ball(canvas);
             interval = setInterval(paddle.runGame, 20);
 
             document.addEventListener("keydown", paddle.changeDirection);
@@ -64,20 +64,21 @@
 
         function Canvas(){
 
-            this.board = document.getElementById("canvas");
+            Canvas.prototype.board = document.getElementById("canvas");
             this.board.width = 0.6 * window.innerWidth;
             this.board.height =  0.7 * window.innerHeight;
 
-            this.height = this.board.height;
-            this.width = this.board.width;
-            this.drawer =  this.board.getContext("2d");
+            Canvas.prototype.height = this.board.height;
+            Canvas.prototype.width = this.board.width;
+
             this.rectColor = "#00d9f0";
 
+            this.drawer =  this.board.getContext("2d");
             this.drawer.fillStyle = this.rectColor;
         }
 
         function Ball(canvas) {
-            this.color = "#94002b"
+            this.color = "#94002b";
             this.canvas = canvas;
 
             this.speedX = 3;
@@ -85,52 +86,57 @@
             this.width = 0.02 * canvas.width;
             this.height = 0.05 * canvas.height;
 
-            this.posX = (this.canvas.width - this.width)/2;
-            this.posY = (this.canvas.height - this.height)/2;
+            this.posX = (canvas.width - this.width)/2;
+            this.posY = (canvas.height - this.height)/2;
 
-            this.move = () =>
-            {
-                if (Math.floor(this.posY) < -this.speedY || Math.ceil(this.posY) == Math.ceil(this.canvas.height - this.height)){
-                    this.speedY *= -1;
-                }
-                this.canvas.drawer.clearRect(this.posX - 1, this.posY - 1, this.width + 2, this.height + 2);
-                this.posX += this.speedX;
-                this.posY += this.speedY;
-                this.redraw();
-            }
-
-            this.collision = paddle =>
-            {
-                this.speedX > 0? this.speedX = -1*(this.speedX +1) : this.speedX = -1*(this.speedX - 1);
-                this.speedY += 0.2 * paddle.speed;
-            }
-
-            this.redraw = () => {
-                this.canvas.drawer.fillStyle = this.color;
-                this.canvas.drawer.fillRect(this.posX, this.posY, this.width, this.height);
-            }
         }
 
+        Ball.prototype.move = function() {
+           if (Math.floor(this.posY) < -this.speedY || Math.ceil(this.posY) >= Math.ceil(this.canvas.height - this.height)){
+               this.speedY *= -1;
+           }
+           this.canvas.drawer.clearRect(this.posX - 1, this.posY - 1, this.width + 2, this.height + 2);
+           this.posX += this.speedX;
+           this.posY += this.speedY;
+           this.redraw();
+        }
+
+        Ball.prototype.collision = function(paddle)
+        {
+                this.speedX > 0? this.speedX = -1*(this.speedX +1) : this.speedX = -1*(this.speedX - 1);
+                this.speedY += 0.2 * paddle.speed;
+        }
+
+        Ball.prototype.redraw = function(){
+            this.canvas.drawer.fillStyle = this.color;
+            this.canvas.drawer.fillRect(this.posX, this.posY, this.width, this.height);
+        }
+
+
         function Paddle(positionX, startY, paddleWidth, paddleLength, canvas, ball="_", wall="_"){
-            this.canvas = canvas;
+            Paddle.prototype.canvas = canvas;
 
             this.positionY = startY;
             this.length = paddleLength;
             this.positionX = positionX;
             this.width = paddleWidth;
 
-            this.speed = 0;
+            Paddle.prototype.speed = 0;
 
             this.ball = ball;
             this.wall = wall;
 
-            this.changeDirection = e => {
+            this.changeDirection = function(e) {
                 keyId = e.charCode? e.charCode: e.which? e.which: e.keycode;
                 if (keyId == 38){   // up
                     this.speed = -5;
                 } else if (keyId == 40){   // down
                     this.speed = 5;
                 }
+            }
+
+            this.draw = () => {
+                this.canvas.drawer.fillRect(this.positionX, this.positionY, this.width, this.length);
             }
 
             this.move = () => {
@@ -144,10 +150,6 @@
                 } else if (this.speed > 0){
                     this.positionY = this.canvas.height - this.length;
                 }
-            }
-
-            this.draw = () => {
-                this.canvas.drawer.fillRect(this.positionX, this.positionY, this.width, this.length);
             }
 
             this.runGame = () =>
@@ -172,6 +174,9 @@
                 }
             }
         }
+
+
+
 
     </script>
 {% endblock %}
