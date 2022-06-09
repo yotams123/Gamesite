@@ -44,50 +44,56 @@
         let interval;
 
         let startGame = (() => {
-            let canvas = document.getElementById("canvas");
-            canvas.width = 0.6 * window.innerWidth;
-            canvas.height =  0.7 * window.innerHeight;
-            let drawer = canvas.getContext("2d");
-            let canvasWidth = parseInt(getComputedStyle(canvas).width);
-            let canvasHeight = parseInt(getComputedStyle(canvas).height);
-            let rectColor = "#00d9f0";
-            drawer.fillStyle = rectColor;
+            let canvas = new Canvas();
 
             let wallPadding = 5;
-            let paddleWidth = canvasWidth/80;
+            let paddleWidth = canvas.width/80;
 
-            let paddleLength = canvasHeight/4;
-            let paddleX = canvasWidth - paddleWidth - wallPadding;
-            let startY = canvasHeight/2 - paddleLength/2;
+            let paddleLength = canvas.height/4;
+            let paddleX = canvas.width - paddleWidth - wallPadding;
+            let startY = canvas.height/2 - paddleLength/2;
 
-            let ball = new Ball(canvasWidth, canvasHeight, drawer);
-            let wall = new Paddle(5, 0, paddleWidth, canvasHeight, canvasHeight, canvasWidth, drawer, rectColor);
-            let paddle = new Paddle(paddleX, startY, paddleWidth, paddleLength, canvasHeight, canvasWidth, drawer, rectColor, ball, wall);
+            let ball = new Ball(canvas);
+            let wall = new Paddle(5, 0, paddleWidth, canvas.height, canvas);
+            let paddle = new Paddle(paddleX, startY, paddleWidth, paddleLength, canvas, ball, wall);
 
             interval = setInterval(paddle.runGame, 20);
 
             document.addEventListener("keydown", paddle.changeDirection);
         })();
 
-        function Ball(canvasWidth, canvasHeight, drawer) {
+        function Canvas(){
+
+            this.board = document.getElementById("canvas");
+            this.board.width = 0.6 * window.innerWidth;
+            this.board.height =  0.7 * window.innerHeight;
+
+            this.height = this.board.height;
+            this.width = this.board.width;
+            this.drawer =  this.board.getContext("2d");
+            this.rectColor = "#00d9f0";
+
+            this.drawer.fillStyle = this.rectColor;
+        }
+
+        function Ball(canvas) {
             this.color = "#94002b"
-            this.drawer = drawer;
+            this.canvas = canvas;
 
             this.speedX = 3;
             this.speedY = 0;
-            this.ballWidth = 0.02 * canvasWidth;
-            this.ballHeight = 0.05*canvasHeight;
-            this.canvasHeight = canvasHeight;
+            this.width = 0.02 * canvas.width;
+            this.height = 0.05 * canvas.height;
 
-            this.posX = (canvasWidth - this.ballWidth)/2;
-            this.posY = (canvasHeight - this.ballHeight)/2;
+            this.posX = (this.canvas.width - this.width)/2;
+            this.posY = (this.canvas.height - this.height)/2;
 
             this.move = () =>
             {
-                if (Math.floor(this.posY) < -this.speedY || Math.ceil(this.posY) == Math.ceil(this.canvasHeight - this.ballHeight)){
+                if (Math.floor(this.posY) < -this.speedY || Math.ceil(this.posY) == Math.ceil(this.canvas.height - this.height)){
                     this.speedY *= -1;
                 }
-                this.drawer.clearRect(this.posX - 1, this.posY - 1, this.ballWidth + 2, this.ballHeight + 2);
+                this.canvas.drawer.clearRect(this.posX - 1, this.posY - 1, this.width + 2, this.height + 2);
                 this.posX += this.speedX;
                 this.posY += this.speedY;
                 this.redraw();
@@ -100,53 +106,48 @@
             }
 
             this.redraw = () => {
-                this.drawer.fillStyle = this.color;
-                this.drawer.fillRect(this.posX, this.posY, this.ballWidth, this.ballHeight);
+                this.canvas.drawer.fillStyle = this.color;
+                this.canvas.drawer.fillRect(this.posX, this.posY, this.width, this.height);
             }
         }
 
-        function Paddle(paddleX, startY, paddleWidth, paddleLength, canvasHeight, canvasWidth, drawer, rectColor, ball, wall="_"){
-            this.drawer = drawer;
-            this.drawer.fillRect(paddleX, startY, paddleWidth, paddleLength);
+        function Paddle(positionX, startY, paddleWidth, paddleLength, canvas, ball="_", wall="_"){
+            this.canvas = canvas;
 
             this.positionY = startY;
-            this.paddleLength = paddleLength;
-            this.paddleX = paddleX;
-            this.paddleWidth = paddleWidth;
-            this.wall = wall;
+            this.length = paddleLength;
+            this.positionX = positionX;
+            this.width = paddleWidth;
 
             this.speed = 0;
-            this.canvasHeight = canvasHeight;
-            this.canvasWidth = canvasWidth;
 
             this.ball = ball;
+            this.wall = wall;
 
             this.changeDirection = e => {
                 keyId = e.charCode? e.charCode: e.which? e.which: e.keycode;
                 if (keyId == 38){   // up
                     this.speed = -5;
-
-                    this.positionY> -1 * this.speed? this.positionY += parseInt(this.speed): this.positionY=0;
                 } else if (keyId == 40){   // down
                     this.speed = 5;
                 }
             }
 
             this.move = () => {
-                this.drawer.clearRect(this.paddleX - 5, this.positionY - 5, this.paddleWidth + 10, this.paddleLength + 10);
+                this.canvas.drawer.clearRect(this.positionX - 5, this.positionY - 5, this.width + 10, this.length + 10);
                 if (this.speed < 0 && this.positionY > -this.speed){
                     this.positionY += this.speed;
-                } else if (this.speed > 0 && this.positionY + this.paddleLength + this.speed < this.canvasHeight){
+                } else if (this.speed > 0 && this.positionY + this.length + this.speed < this.canvas.height){
                     this.positionY += this.speed;
                 } else if (this.speed < 0){
                     this.positionY = 0;
                 } else if (this.speed > 0){
-                    this.positionY = this.canvasHeight - this.paddleLength;
+                    this.positionY = this.canvas.height - this.length;
                 }
             }
 
             this.draw = () => {
-                this.drawer.fillRect(this.paddleX, this.positionY, this.paddleWidth, this.paddleLength);
+                this.canvas.drawer.fillRect(this.positionX, this.positionY, this.width, this.length);
             }
 
             this.runGame = () =>
@@ -156,16 +157,16 @@
                 this.wall.draw();
 
                 this.ball.move();
-                this.drawer.fillStyle = rectColor;
+                this.canvas.drawer.fillStyle = this.canvas.rectColor;
 
-                if (Math.floor(this.ball.posX + this.ball.ballWidth) > Math.floor(this.paddleX) && this.ball.posY + this.ball.ballHeight > this.positionY && this.positionY + this.paddleLength > this.ball.posY ){  // any part of the ball hits any part of the paddle
+                if (Math.floor(this.ball.posX + this.ball.width) > Math.floor(this.positionX) && this.ball.posY + this.ball.height > this.positionY && this.positionY + this.length > this.ball.posY ){  // any part of the ball hits any part of the paddle
                     this.ball.collision(this);
                 }
-                if (Math.floor(this.ball.posX) <= Math.floor(this.wall.paddleX + this.wall.paddleWidth)){
+                if (Math.floor(this.ball.posX) <= Math.floor(this.wall.positionX + this.wall.width)){
                     this.ball.collision(this.wall);
                 }
 
-                if (this.ball.posX >= this.canvasWidth){
+                if (this.ball.posX >= this.canvas.width){
                     clearInterval(interval);
                     alert("Game over!");
                 }
