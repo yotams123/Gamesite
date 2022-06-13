@@ -68,7 +68,7 @@
             this.height = 0.05 * canvas.height;
 
             this.posX = (canvas.width - this.width)/2;
-            this.posY = (canvas.height - this.height)/2;
+            this.posY = Math.random() * (this.canvas.height- this.height);
         }
 
         Ball.prototype.move = function() {
