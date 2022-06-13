@@ -43,25 +43,6 @@
 
         let interval;
 
-        let startGame = (() => {
-            let canvas = new Canvas();
-
-            let wallPadding = 5;
-            let paddleWidth = canvas.width/80;
-
-            let paddleLength = canvas.height/4;
-            let paddleX = canvas.width - paddleWidth - wallPadding;
-            let startY = canvas.height/2 - paddleLength/2;
-
-            let ball = new Ball(canvas);
-            let wall = new Paddle(5, 0, paddleWidth, canvas.height, canvas);
-            let paddle = new Paddle(paddleX, startY, paddleWidth, paddleLength, canvas, ball, wall);
-            let b2 = new Ball(canvas);
-            interval = setInterval(paddle.runGame, 20);
-
-            document.addEventListener("keydown", paddle.changeDirection);
-        })();
-
         function Canvas(){
 
             Canvas.prototype.board = document.getElementById("canvas");
@@ -78,8 +59,8 @@
         }
 
         function Ball(canvas) {
-            this.color = "#94002b";
-            this.canvas = canvas;
+            Ball.prototype.color = "#94002b";
+            Ball.prototype.canvas = canvas;
 
             this.speedX = 3;
             this.speedY = 0;
@@ -88,7 +69,6 @@
 
             this.posX = (canvas.width - this.width)/2;
             this.posY = (canvas.height - this.height)/2;
-
         }
 
         Ball.prototype.move = function() {
@@ -113,20 +93,20 @@
         }
 
 
-        function Paddle(positionX, startY, paddleWidth, paddleLength, canvas, ball="_", wall="_"){
+        function Paddle(positionX, positionY, width, length, canvas="_", ball="_", wall="_")
+        {
             Paddle.prototype.canvas = canvas;
+            Paddle.prototype.ball = ball;
+            Paddle.prototype.wall = wall;
 
-            this.positionY = startY;
-            this.length = paddleLength;
             this.positionX = positionX;
-            this.width = paddleWidth;
+            this.positionY = positionY;
 
-            Paddle.prototype.speed = 0;
+            this.length = length;
+            this.width = width;
+            this.speed = 0;
 
-            this.ball = ball;
-            this.wall = wall;
-
-            this.changeDirection = function(e) {
+            this.changeDirection = e => {
                 keyId = e.charCode? e.charCode: e.which? e.which: e.keycode;
                 if (keyId == 38){   // up
                     this.speed = -5;
@@ -134,49 +114,65 @@
                     this.speed = 5;
                 }
             }
-
-            this.draw = function() {
-                this.canvas.drawer.fillRect(this.positionX, this.positionY, this.width, this.length);
-            }
-
-            this.move = function() {
-                this.canvas.drawer.clearRect(this.positionX - 5, this.positionY - 5, this.width + 10, this.length + 10);
-                if (this.speed < 0 && this.positionY > -this.speed){
-                    this.positionY += this.speed;
-                } else if (this.speed > 0 && this.positionY + this.length + this.speed < this.canvas.height){
-                    this.positionY += this.speed;
-                } else if (this.speed < 0){
-                    this.positionY = 0;
-                } else if (this.speed > 0){
-                    this.positionY = this.canvas.height - this.length;
-                }
-            }
-
-            this.runGame = function()
-            {
-                console.log(typeof this.move());
-                this.draw();
-                this.wall.draw();
-
-                this.ball.move();
-                this.canvas.drawer.fillStyle = this.canvas.rectColor;
-
-                if (Math.floor(this.ball.posX + this.ball.width) > Math.floor(this.positionX) && this.ball.posY + this.ball.height > this.positionY && this.positionY + this.length > this.ball.posY ){  // any part of the ball hits any part of the paddle
-                    this.ball.collision(this);
-                }
-                if (Math.floor(this.ball.posX) <= Math.floor(this.wall.positionX + this.wall.width)){
-                    this.ball.collision(this.wall);
-                }
-
-                if (this.ball.posX >= this.canvas.width){
-                    clearInterval(interval);
-                    alert("Game over!");
-                }
-            }
         }
 
 
+        Paddle.prototype.move = function() {
+            this.canvas.drawer.clearRect(this.positionX - 5, this.positionY - 5, this.width + 10, this.length + 10);
+            if (this.speed < 0 && this.positionY > -this.speed){
+                this.positionY += this.speed;
+            } else if (this.speed > 0 && this.positionY + this.length + this.speed < this.canvas.height){
+                this.positionY += this.speed;
+            } else if (this.speed < 0){
+                this.positionY = 0;
+            } else if (this.speed > 0){
+                this.positionY = this.canvas.height - this.length;
+            }
+        }
 
+        Paddle.prototype.draw = function() {
+            this.canvas.drawer.fillRect(this.positionX, this.positionY, this.width, this.length);
+        }
+
+        Paddle.prototype.runGame = function() {
+            this.move();
+            this.draw();
+            this.wall.draw();
+
+            this.ball.move();
+            this.canvas.drawer.fillStyle = this.canvas.rectColor;
+
+            if (Math.floor(this.ball.posX + this.ball.width) > Math.floor(this.positionX) && this.ball.posY + this.ball.height > this.positionY && this.positionY + this.length > this.ball.posY ){  // any part of the ball hits any part of the paddle
+                this.ball.collision(this);
+            }
+            if (Math.floor(this.ball.posX) <= Math.floor(this.wall.positionX + this.wall.width)){
+                this.ball.collision(this.wall);
+            }
+
+            if (this.ball.posX >= this.canvas.width){
+                clearInterval(interval);
+                alert("Game over!");
+            }
+        }
+
+        let startGame = (() => {
+            let canvas = new Canvas();
+
+            let wallPadding = 5;
+            let paddleWidth = canvas.width/80;
+
+            let paddleLength = canvas.height/4;
+            let paddleX = canvas.width - paddleWidth - wallPadding;
+            let startY = canvas.height/2 - paddleLength/2;
+
+            let ball = new Ball(canvas);
+            let wall = new Paddle(5, 0, paddleWidth, canvas.height, canvas);
+            let paddle = new Paddle(paddleX, startY, paddleWidth, paddleLength, canvas, ball, wall);
+
+            interval = setInterval(function(){ paddle.runGame() }, 20);
+
+            document.addEventListener("keydown", paddle.changeDirection);
+        })();
 
     </script>
 {% endblock %}
