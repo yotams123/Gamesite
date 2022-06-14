@@ -106,6 +106,8 @@
             this.width = width;
             this.speed = 0;
 
+            this.score = 0;
+
             this.changeDirection = e => {
                 keyId = e.charCode? e.charCode: e.which? e.which: e.keycode;
                 if (keyId == 38){   // up
@@ -144,6 +146,8 @@
 
             if (Math.floor(this.ball.posX + this.ball.width) > Math.floor(this.positionX) && this.ball.posY + this.ball.height > this.positionY && this.positionY + this.length > this.ball.posY ){  // any part of the ball hits any part of the paddle
                 this.ball.collision(this);
+                this.score++;
+                document.querySelector(".scoreDisplay").innerHTML = `Your Current Score: ${this.score}`;
             }
             if (Math.floor(this.ball.posX) <= Math.floor(this.wall.positionX + this.wall.width)){
                 this.ball.collision(this.wall);
