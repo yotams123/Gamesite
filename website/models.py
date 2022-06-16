@@ -15,3 +15,15 @@ class User(db.Model, flask_login.UserMixin):
     gender = db.Column(db.String(6))
 
 
+class SnakeScores(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    username = db.Column(db.String(50))
+    score = db.Column(db.Integer)
+    date = db.Column(db.DateTime(timezone=True), default=sqlalchemy.sql.func.now())
+
+
+class PongScores(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    username = db.Column(db.String(50))
+    score = db.Column(db.Integer)
+    date = db.Column(db.DateTime(timezone=True), default=sqlalchemy.sql.func.now())
