@@ -23,9 +23,7 @@ def login():
 
 @auth.route('/register', methods=['GET', 'POST'])
 def register():
-    print(flask.request.method)
     if flask.request.method == "POST":
-        print(flask.request.form.get("submit"))
         firstname = flask.request.form.get("firstname")
         lastname = flask.request.form.get("lastname")
         username = flask.request.form.get("new_user")
@@ -35,14 +33,18 @@ def register():
         location = flask.request.form.get("loc")
         gender = flask.request.form.get("gender")
 
-        new_user = website.models.User(first_name=firstname, last_name=lastname, username=username,
-                                       password=werkzeug.security.generate_password_hash(password, method='sha256'),
-                                       email=email,
-                                       birthday=datetime.datetime.strptime(birthday, '%Y-%m-%d').date(), location=location, gender=gender)
-        website.models.db.session.add(new_user)
-        website.models.db.session.commit()
-        flask.flash("Successfully registered!", category="success")
-        return flask.redirect(flask.url_for('pages.home'))
+        user = website.models.User.query.filter_by(username=username).first()
+        if user:
+            flask.flash("User already exists with that name", category='error')
+        else:
+            new_user = website.models.User(first_name=firstname, last_name=lastname, username=username,
+                                           password=werkzeug.security.generate_password_hash(password, method='sha256'),
+                                           email=email,
+                                           birthday=datetime.datetime.strptime(birthday, '%Y-%m-%d').date(), location=location, gender=gender)
+            website.models.db.session.add(new_user)
+            website.models.db.session.commit()
+            flask.flash("Successfully registered!", category="success")
+            return flask.redirect(flask.url_for('pages.home'))
     return flask.render_template("register.html")
 
 
