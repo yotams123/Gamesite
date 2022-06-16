@@ -1,6 +1,6 @@
 import flask
 import flask_sqlalchemy
-import models
+import os
 
 
 db = flask_sqlalchemy.SQLAlchemy()
@@ -21,4 +21,13 @@ def create_app():
     app.register_blueprint(pages, url_prefix = '/')
     app.register_blueprint(auth, url_prefix='/')
 
+    import website.models as models
+    create_database(app)
+
     return app
+
+
+def create_database(app):
+    if not os.path.exists("/website/" + DB_NAME):
+        db.create_all(app=app)
+        print('Created Database!')
