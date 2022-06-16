@@ -3,6 +3,7 @@ import flask
 
 def create_app():
     app = flask.Flask(__name__)
+    app.config['SECRET_KEY'] = 'ksjhdfkhsdkjfhk'
 
     from .games import games
     from .auth import auth
