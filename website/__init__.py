@@ -1,5 +1,7 @@
 import flask
 import flask_sqlalchemy
+import models
+
 
 db = flask_sqlalchemy.SQLAlchemy()
 DB_NAME = "gamesiteDB.db"
