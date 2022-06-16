@@ -8,7 +8,6 @@ auth = flask.Blueprint('auth', __name__)
 
 @auth.route('/login', methods=['GET', 'POST'])
 def login():
-    print(flask.request.method)
     if flask.request.method == 'POST':
         username = flask.request.form.get("user")
         password = flask.request.form.get("password")
@@ -19,7 +18,8 @@ def login():
 @auth.route('/register', methods=['GET', 'POST'])
 def register():
     print(flask.request.method)
-    if flask.request.method == "POST":
+    if flask.request.method == "POST" and flask.request.form.get("submit") is not None:
+        print(flask.request.form.get("submit"))
         firstname = flask.request.form.get("firstname")
         lastname = flask.request.form.get("lastname")
         username = flask.request.form.get("new_user")

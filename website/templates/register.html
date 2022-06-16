@@ -49,6 +49,7 @@
 <script>
 
     function checkForm(){
+
                 return checkFname() &&
                 checkLname() &&
                 checkUname() &&
@@ -66,7 +67,7 @@
                 alert("Please enter a first name");
                 flag = false;
             }
-            if (fname[0] != fname[0].toUpperCase()) {
+            if (fname.charAt(0) != fname.charAt(0).toUpperCase()) {
                 alert("First name must start with a capital letter");
                 flag = false;
             }
