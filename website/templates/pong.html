@@ -149,7 +149,7 @@
                 this.score++;
                 document.querySelector(".scoreDisplay").innerHTML = `Your Current Score: ${this.score}`;
             }
-            
+
             if (Math.floor(this.ball.posX) <= Math.floor(this.wall.positionX + this.wall.width)){
                 this.ball.collision(this.wall);
             }
