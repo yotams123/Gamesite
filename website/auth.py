@@ -1,4 +1,7 @@
 import flask
+import werkzeug.security
+import website.models
+import datetime
 
 auth = flask.Blueprint('auth', __name__)
 
@@ -25,7 +28,15 @@ def register():
         birthday = flask.request.form.get("birthday")
         location = flask.request.form.get("loc")
         gender = flask.request.form.get("gender")
+
+        new_user = website.models.User(first_name=firstname, last_name=lastname, username=username,
+                                       password=werkzeug.security.generate_password_hash(password, method='sha256'),
+                                       email=email,
+                                       birthday=datetime.datetime.strptime(birthday, '%Y-%m-%d').date(), location=location, gender=gender)
+        website.models.db.session.add(new_user)
+        website.models.db.session.commit()
         flask.flash("Successfully registered!", category="success")
+        return flask.redirect(flask.url_for('pages.home'))
     return flask.render_template("register.html")
 
 
