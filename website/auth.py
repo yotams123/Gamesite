@@ -11,14 +11,20 @@ def login():
     if flask.request.method == 'POST':
         username = flask.request.form.get("user")
         password = flask.request.form.get("password")
-        flask.flash("Successfully logged in!", category="success")
+
+        user = website.models.User.query.filter_by(username=username).first()
+        if user:
+            if werkzeug.security.check_password_hash(user.password, password):
+                flask.flash("Successfully logged in!", category="success")
+                return flask.redirect(flask.url_for('pages.home'))
+        flask.flash("Password or Username invalid", category="error")
     return flask.render_template("login.html")
 
 
 @auth.route('/register', methods=['GET', 'POST'])
 def register():
     print(flask.request.method)
-    if flask.request.method == "POST" and flask.request.form.get("submit") is not None:
+    if flask.request.method == "POST":
         print(flask.request.form.get("submit"))
         firstname = flask.request.form.get("firstname")
         lastname = flask.request.form.get("lastname")
