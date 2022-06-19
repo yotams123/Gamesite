@@ -31,12 +31,26 @@
             font-weight: bold;
         }
 
+        #ok_button{
+            position: absolute;
+            top: 30%;
+            left: 10%;
+            visibility: hidden;
+        }
+
+        #score {
+            visibility: hidden;
+        }
     </style>
 {% endblock %}
 
 {% block body_content %}
     <h1><strong>Pong</strong></h1>
     <h3 class="scoreDisplay">Your Current Score: 0</h3>
+    <form method="post">
+        <input type="text" id="score" name="score">
+        <input type="submit" class="btn btn-primary" value="Submit Score" id="ok_button" name="ok_button">
+    </form>
     <canvas id="canvas">
     </canvas>
     <script>
@@ -156,7 +170,9 @@
 
             if (this.ball.posX >= this.canvas.width){
                 clearInterval(interval);
-                alert("Game over!");
+                document.getElementById("score").value = this.score;
+                alert(`Game over! You scored ${document.getElementById("score").value} points`);
+                document.getElementById("ok_button").style.visibility = 'visible';
             }
         }
 

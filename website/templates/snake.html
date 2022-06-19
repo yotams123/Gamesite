@@ -42,9 +42,22 @@
 
     h3{
         float: left;
+        position: absolute;
+        left: 3%;
         color: red;
         font-family: "courier new";
         font-weight: bold;
+    }
+
+    #ok_button{
+        position: absolute;
+        top: 30%;
+        left: 10%;
+<!--        visibility: hidden;-->
+    }
+
+    #score {
+        visibility: hidden;
     }
 </style>
 
@@ -53,10 +66,11 @@
 {% block body_content %}
     <h1><strong>Snake</strong></h1>
     <h3 class="scoreDisplay">Your Current Score: 0</h3>
+    <form method="post">
+        <input type="text" id="score" name="score">
+        <input type="submit" class="btn btn-primary" value="Submit Score" id="ok_button" name="ok_button">
+    </form>
     <div class="grid"></div>
-
-
-
     <script type="text/javascript">
         const grid = document.querySelector(".grid");
         const popup = document.querySelector(".popup");
