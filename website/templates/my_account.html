@@ -23,7 +23,6 @@
 
     input[type=submit]{
         position:relative;
-        left: 13%;
         margin:1%;
     }
 
@@ -45,6 +44,12 @@
         display: flex;
         justify-content: space-around;
         color: white;
+    }
+
+    #logout{
+      position: absolute;
+      left: 25%;
+      margin-top: 1%;
     }
 </style>
 <script>
@@ -232,6 +237,7 @@
     <div> Female: <input type="radio" name="gender" id="female" value="female" /></div>
   </div>
     <input type="submit" id="submit" name="submit" value="Submit" class="btn btn-success btn-lg"/>
+    <input type="button" id="logout" name="logout" value="Log Out" class="btn btn-danger btn-lg"/>
   </p>
 </form>
 {% endblock %}

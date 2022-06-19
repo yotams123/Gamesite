@@ -2,6 +2,7 @@ import flask
 import werkzeug.security
 import website.models
 import datetime
+import flask_login
 
 auth = flask.Blueprint('auth', __name__)
 
@@ -11,10 +12,10 @@ def login():
     if flask.request.method == 'POST':
         username = flask.request.form.get("user")
         password = flask.request.form.get("password")
-
         user = website.models.User.query.filter_by(username=username).first()
         if user:
             if werkzeug.security.check_password_hash(user.password, password):
+                flask_login.login_user(user)
                 flask.flash("Successfully logged in!", category="success")
                 return flask.redirect(flask.url_for('pages.home'))
         flask.flash("Password or Username invalid", category="error")
