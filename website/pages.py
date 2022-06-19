@@ -11,4 +11,4 @@ def home():
 
 @pages.route('/admin')
 def admin():
-    pass
+    return flask.render_template("admin.html", user=flask_login.current_user)
