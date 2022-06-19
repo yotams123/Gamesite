@@ -63,6 +63,24 @@ def my_account():
             birthday = flask.request.form.get("birthday")
             location = flask.request.form.get("loc")
             gender = flask.request.form.get("gender")
+            update_user = website.models.User.query.get_or_404(flask_login.current_user.id)
+            if firstname != "":
+                update_user.first_name = firstname
+            if lastname != "":
+                update_user.last_name = lastname
+            if username != "":
+                update_user.username = username
+            if new_password != "" and werkzeug.security.check_password_hash(update_user.password, old_password):
+                update_user.password = werkzeug.security.generate_password_hash(new_password)
+            if email != "":
+                update_user.email = email
+            if birthday != "":
+                update_user.birthday = birthday
+            if location != "":
+                update_user.location = location
+            if gender != "":
+                update_user.gender = gender
+            website.models.db.session.commit()
             flask.flash("Successfully updated user info!", "success")
         if flask.request.form.get('logout'):
             flask_login.logout_user()
