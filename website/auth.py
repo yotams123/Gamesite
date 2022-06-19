@@ -19,7 +19,7 @@ def login():
                 flask.flash("Successfully logged in!", category="success")
                 return flask.redirect(flask.url_for('pages.home'))
         flask.flash("Password or Username invalid", category="error")
-    return flask.render_template("login.html")
+    return flask.render_template("login.html", user=flask_login.current_user)
 
 
 @auth.route('/register', methods=['GET', 'POST'])
@@ -46,25 +46,25 @@ def register():
             website.models.db.session.commit()
             flask.flash("Successfully registered!", category="success")
             return flask.redirect(flask.url_for('pages.home'))
-    return flask.render_template("register.html")
+    return flask.render_template("register.html", user=flask_login.current_user)
 
 
 @auth.route('/my-account', methods=['GET', 'POST'])
 @flask_login.login_required
 def my_account():
     if flask.request.method == 'POST':
-        # if flask.request.form.get('submit'):
-        #     firstname = flask.request.form.get("firstname")
-        #     lastname = flask.request.form.get("lastname")
-        #     username = flask.request.form.get("new_user")
-        #     old_password = flask.request.form.get("pass")
-        #     new_password = flask.request.form.get("new_pass")
-        #     email = flask.request.form.get("mail")
-        #     birthday = flask.request.form.get("birthday")
-        #     location = flask.request.form.get("loc")
-        #     gender = flask.request.form.get("gender")
-        #     flask.flash("Successfully updated user info!", "success")
+        if flask.request.form.get('submit'):
+            firstname = flask.request.form.get("firstname")
+            lastname = flask.request.form.get("lastname")
+            username = flask.request.form.get("new_user")
+            old_password = flask.request.form.get("pass")
+            new_password = flask.request.form.get("new_pass")
+            email = flask.request.form.get("mail")
+            birthday = flask.request.form.get("birthday")
+            location = flask.request.form.get("loc")
+            gender = flask.request.form.get("gender")
+            flask.flash("Successfully updated user info!", "success")
         if flask.request.form.get('logout'):
             flask_login.logout_user()
             return flask.redirect(flask.url_for('auth.login'))
-    return flask.render_template("my_account.html")
+    return flask.render_template("my_account.html", user=flask_login.current_user)
