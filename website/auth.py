@@ -50,16 +50,21 @@ def register():
 
 
 @auth.route('/my-account', methods=['GET', 'POST'])
+@flask_login.login_required
 def my_account():
     if flask.request.method == 'POST':
-        firstname = flask.request.form.get("firstname")
-        lastname = flask.request.form.get("lastname")
-        username = flask.request.form.get("new_user")
-        old_password = flask.request.form.get("pass")
-        new_password = flask.request.form.get("new_pass")
-        email = flask.request.form.get("mail")
-        birthday = flask.request.form.get("birthday")
-        location = flask.request.form.get("loc")
-        gender = flask.request.form.get("gender")
-        flask.flash("Successfully updated user info!", "success")
+        # if flask.request.form.get('submit'):
+        #     firstname = flask.request.form.get("firstname")
+        #     lastname = flask.request.form.get("lastname")
+        #     username = flask.request.form.get("new_user")
+        #     old_password = flask.request.form.get("pass")
+        #     new_password = flask.request.form.get("new_pass")
+        #     email = flask.request.form.get("mail")
+        #     birthday = flask.request.form.get("birthday")
+        #     location = flask.request.form.get("loc")
+        #     gender = flask.request.form.get("gender")
+        #     flask.flash("Successfully updated user info!", "success")
+        if flask.request.form.get('logout'):
+            flask_login.logout_user()
+            return flask.redirect(flask.url_for('auth.login'))
     return flask.render_template("my_account.html")

@@ -1,6 +1,6 @@
-from . import db
 import flask_login
 import sqlalchemy
+from . import db
 
 
 class User(db.Model, flask_login.UserMixin):
@@ -9,7 +9,7 @@ class User(db.Model, flask_login.UserMixin):
     last_name = db.Column(db.String(50))
     username = db.Column(db.String(50), unique=True)
     password = db.Column(db.String(50))
-    email = db.column(db.String(50))
+    email = db.Column(db.String(50))
     birthday = db.Column(db.Date(), default=sqlalchemy.sql.func.now())
     location = db.Column(db.String(50))
     gender = db.Column(db.String(6))
