@@ -13,8 +13,7 @@ def snake():
     if flask.request.method == 'POST':
         score = flask.request.form.get('score')
         print(datetime.datetime.utcnow())
-        log = website.models.SnakeScores(username=flask_login.current_user.username, score=score,
-                                         date=datetime.datetime.utcnow())
+        log = website.models.SnakeScores(username=flask_login.current_user.username, score=score)
         website.models.db.session.add(log)
         website.models.db.session.commit()
     return flask.render_template("snake.html", user=flask_login.current_user)
@@ -26,8 +25,7 @@ def pong():
     if flask.request.method == 'POST':
         score = flask.request.form.get('score')
         print(datetime.datetime.utcnow())
-        log = website.models.PongScores(username=flask_login.current_user.username, score=score,
-                                        date=datetime.datetime.utcnow())
+        log = website.models.PongScores(username=flask_login.current_user.username, score=score)
         website.models.db.session.add(log)
         website.models.db.session.commit()
     return flask.render_template("pong.html", user=flask_login.current_user)

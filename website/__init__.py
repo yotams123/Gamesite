@@ -11,7 +11,7 @@ def create_app():
     app = flask.Flask(__name__)
     app.config['SECRET_KEY'] = 'ksjhdfkhsdkjfhk'
     app.config["SQLALCHEMY_DATABASE_URI"] =f"sqlite:///{DB_NAME}"
-    app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
+    app.config["SQL_TRACK_MODIFICATIONS"] = False
     db.init_app(app)
 
     from .games import games

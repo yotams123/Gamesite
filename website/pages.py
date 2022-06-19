@@ -1,5 +1,8 @@
 import flask
 import flask_login
+import flask_sqlalchemy
+
+import website.models
 
 pages = flask.Blueprint("pages", __name__)
 
@@ -11,4 +14,5 @@ def home():
 
 @pages.route('/admin')
 def admin():
-    return flask.render_template("admin.html", user=flask_login.current_user)
+    data = website.models.User.query.all()
+    return flask.render_template("admin.html", user=flask_login.current_user, data=data)

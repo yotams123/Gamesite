@@ -19,4 +19,18 @@
 
 {% block body_content %}
 <h1>Admin Page</h1>
+<table border="1">
+    {% for row in data %}
+        <tr>
+            <td>{{row.id}}</td>
+            <td>{{row.first_name}}</td>
+            <td>{{row.last_name}}</td>
+            <td>{{row.username}}</td>
+            <td>{{row.email}}</td>
+            <td>{{row.birthday}}</td>
+            <td>{{row.location}}</td>
+            <td>{{row.gender}}</td>
+        </tr>
+    {% endfor %}
+</table>
 {% endblock %}
