@@ -1,6 +1,5 @@
 import flask
 import flask_login
-import flask_sqlalchemy
 
 import website.models
 
@@ -15,4 +14,5 @@ def home():
 @pages.route('/admin')
 def admin():
     data = website.models.User.query.all()
-    return flask.render_template("admin.html", user=flask_login.current_user, data=data)
+    users_columns = website.models.user_columns
+    return flask.render_template("admin.html", user=flask_login.current_user, data=data, users_columns=users_columns)

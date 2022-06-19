@@ -14,22 +14,40 @@
         color: red;
         font-family: courier new;
     }
+    table{
+        border: 3px solid black;
+        width: 70%;
+    }
+
+    table td,tr, th{
+        border: 1px solid grey;
+        text-align: center;
+        width: 7.5%;
+    }
+
+    table tr:nth-child(even){
+        color: #3769ff;
+    }
+
+    table tr:nth-child(odd){
+        color:green;
+    }
 </style>
 {% endblock %}
 
 {% block body_content %}
 <h1>Admin Page</h1>
-<table border="1">
+<table>
+    <tr>
+        {% for column in users_columns %}
+            <th>{{column.upper()}}</th>
+        {% endfor %}
+    </tr>
     {% for row in data %}
         <tr>
-            <td>{{row.id}}</td>
-            <td>{{row.first_name}}</td>
-            <td>{{row.last_name}}</td>
-            <td>{{row.username}}</td>
-            <td>{{row.email}}</td>
-            <td>{{row.birthday}}</td>
-            <td>{{row.location}}</td>
-            <td>{{row.gender}}</td>
+            {% for column in users_columns %}
+                <td>{{row[column]}}</td>
+            {% endfor %}
         </tr>
     {% endfor %}
 </table>
