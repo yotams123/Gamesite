@@ -1,5 +1,4 @@
 import flask_login
-import sqlalchemy
 from . import db
 
 
@@ -10,7 +9,7 @@ class User(db.Model, flask_login.UserMixin):
     username = db.Column(db.String(50), unique=True)
     password = db.Column(db.String(50))
     email = db.Column(db.String(50))
-    birthday = db.Column(db.Date(), default=sqlalchemy.sql.func.now())
+    birthday = db.Column(db.Date())
     location = db.Column(db.String(50))
     gender = db.Column(db.String(6))
     snake_scores = db.relationship('SnakeScores')
@@ -21,11 +20,11 @@ class SnakeScores(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(50), db.ForeignKey('user.username'))
     score = db.Column(db.Integer)
-    date = db.Column(db.DateTime(timezone=True), default=sqlalchemy.sql.func.now())
+    date = db.Column(db.DateTime())
 
 
 class PongScores(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(50), db.ForeignKey('user.username'))
     score = db.Column(db.Integer)
-    date = db.Column(db.DateTime(timezone=True), default=sqlalchemy.sql.func.now())
+    date = db.Column(db.DateTime())
