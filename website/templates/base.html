@@ -20,6 +20,16 @@
         {% block head_content %}
         {% endblock %}
     </div>
+
+    <style>
+        #user_display{
+            color: {% if user.is_authenticated %} green {% else %} red {% endif %};
+            position: absolute;
+            left: 1%;
+            font-weight: bold;
+            font-size: large;
+        }
+    </style>
 </head>
 <body>
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
@@ -37,7 +47,7 @@
             </div>
         </div>
     </nav>
-    <p>
+    <p id="user_display">
         {% if user.is_authenticated %}
             Hello, {{user.username}}
         {% else %}

@@ -1,9 +1,36 @@
 {% extends "base.html" %}
 {% block title %} Home {% endblock %}
 
+{% block head_content %}
+<style>
+    body{
+        background-color: #574B49;
+    }
+
+     #about{
+        color:white;
+        margin:auto;
+        margin-top: 3%;
+        font-size: large;
+        width: 30%;
+        text-align: center;
+     }
+
+    h1 {
+        color:red;
+        margin:auto;
+        text-align: center;
+        font-weight: bold;
+    }
+</style>
+{% endblock %}
+
 {% block body_content %}
-<p>
-    Welcome to Gamesite! Here, you can play arcade style mini games, such as 'Snake' and 'Pong', and compare
+<h1>
+    Welcome to Gamesite!
+</h1>
+<p id="about">
+    Here, you can play arcade style mini games, such as 'Snake' and 'Pong', and compare
     your score to that of people all over the world! To play, you only have to <a href="register"> sign up </a>
     if you haven't already, or <a href="login">log in</a> to play on your existing account!
     Have fun, and good luck!
