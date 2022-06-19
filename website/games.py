@@ -16,9 +16,7 @@ def snake():
         log = website.models.SnakeScores(username=flask_login.current_user.username, score=score)
         website.models.db.session.add(log)
         website.models.db.session.commit()
-    snake_columns = ['id', 'username', 'score', 'date']
-    data = website.models.SnakeScores.query.all()
-    return flask.render_template("snake.html", user=flask_login.current_user, columns=snake_columns, data=data)
+    return flask.render_template("snake.html", user=flask_login.current_user)
 
 
 @games.route('/pong', methods=['GET', 'POST'])
@@ -30,6 +28,4 @@ def pong():
         log = website.models.PongScores(username=flask_login.current_user.username, score=score)
         website.models.db.session.add(log)
         website.models.db.session.commit()
-    pong_columns = ['id', 'username', 'score', 'date']
-    data = website.models.PongScores.query.all()
-    return flask.render_template("pong.html", user=flask_login.current_user, columns=pong_columns, data=data)
+    return flask.render_template("pong.html", user=flask_login.current_user)
