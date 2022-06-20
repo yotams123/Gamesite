@@ -17,6 +17,8 @@
     table{
         border: 3px solid black;
         width: 70%;
+        position: relative;
+        left: 15%;
     }
 
     table td,tr, th{
@@ -32,6 +34,35 @@
     table tr:nth-child(odd){
         color:green;
     }
+
+    .lefter{
+        float: left;
+        position: absolute;
+        left: 5%;
+    }
+
+    .righter{
+        float: right;
+        position: absolute;
+        right: 5%;
+    }
+
+    .end{
+        width: 40%;
+        text-align: center;
+        position: absolute;
+        left: 25%;
+        top: 75%;
+    }
+
+    input{
+        margin: 5% 0;
+    }
+
+    .input_text{
+        color: #00007d;
+    }
+
 </style>
     <script>
         function checkForm(){
@@ -200,41 +231,35 @@
     {% endfor %}
 </table>
 <form method="post" action="" onsubmit="return checkForm()">
-    <p>
+    <div id="del_area" class="lefter input_text" style="margin-top:5%;">
         <label> Choose Table to delete from: </label><br />
         User: <input type="radio" name="table" id="users_table" value="User"/>
-        Snake Scores: <input type="radio" name="table" id="snake_scores" value="SnakeScores" /><br />
-        Pong Scores: <input type="radio" name="table" id="pong_scores" value="PongScores" /><br />
-    </p>
-    <br />
-    <br />
-    <p>
+        Snake Scores: <input type="radio" name="table" id="snake_scores" value="SnakeScores" />
+        Pong Scores: <input type="radio" name="table" id="pong_scores" value="PongScores" />
+        <br />
+        <br />
         <label for="del">Enter id of row to be deleted:</label>
         <input type="text" id="del" name="del" value="" />
-    </p>
+    </div>
     <br />
     <br />
-    <p>
+    <div id="update_area" class="righter input_text">
         <label for="update_row"> Enter id of row to update in Users Table:</label>
         <input type="text" name="update_row" id="update_row"/>
-    </p>
     <br />
-    <p>
         <label for="col_name"> Enter column to update in Users Table:</label>
         <input type="text" name="col_name" id="col_name" />
-    </p>
     <br />
-    <p>
         <label for="col_val"> Enter new value: </label>
         <input type="text" name="col_val" id="col_val" />
-    </p>
+    </div>
     <br />
     <br />
-    <p>
+    <div id="order_by_area" class="end input_text">
         <label for="order"> Enter column by which to order the tables: </label>
         <input type="text" name="order" id="order" value="1" />
-    </p>
     <br />
     <input type="submit" id="submit" name="submit" value="submit" />
+    </div>
 </form>
 {% endblock %}

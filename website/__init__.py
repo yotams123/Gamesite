@@ -10,8 +10,8 @@ DB_NAME = "gamesiteDB.db"
 def create_app():
     app = flask.Flask(__name__)
     app.config['SECRET_KEY'] = 'ksjhdfkhsdkjfhk'
-    app.config["SQLALCHEMY_DATABASE_URI"] =f"sqlite:///{DB_NAME}"
-    app.config["SQL_TRACK_MODIFICATIONS"] = False
+    app.config["SQLALCHEMY_DATABASE_URI"] = f"sqlite:///{DB_NAME}"
+    app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
     db.init_app(app)
 
     from .games import games
@@ -40,4 +40,3 @@ def create_app():
 def create_database(app):
     if not os.path.exists("/website/" + DB_NAME):
         db.create_all(app=app)
-        print('Created Database!')
