@@ -33,6 +33,154 @@
         color:green;
     }
 </style>
+    <script>
+        function checkForm(){
+            const update_row = document.getElementById("update_row").value;
+
+            if (isNaN(update_row) && update_row != "") {
+                window.alert("Enter valid row id to update");
+                return false;
+            }
+
+            if (update_row != "") {
+                flag = checkUpdate();
+            }
+
+            const del_row = document.getElementById("del").value;
+            if (isNaN(del_row) && del_row != "") {
+                window.alert("Enter valid row id to delete");
+                return false;
+            }
+
+            let del_table;
+            const tables = document.getElementsByName("table");
+            for (let x of tables){
+                if (x.checked){
+                    del_table = x.value;
+                }
+            }
+
+            if (del_row != "" && del_table == undefined){
+                window.alert("Choose table to delete from");
+                return false;
+            }
+        }
+
+        function checkUpdate() {
+            const update_column = document.getElementById("col_name").value;
+
+            const col_val = document.getElementById("col_val").value;
+
+            if (update_column == ""){
+                window.alert("Select a column to update");
+                return false;
+            }
+
+            let flag = true;
+
+            if (update_column == 'first_name') {
+                flag = FnameCheck();
+            } else if (update_column == 'last_name') {
+                flag = LnameCheck();
+            } else if (update_column == 'username') {
+                flag = UnameCheck();
+            } else if (update_column == 'email') {
+                flag = EmailCheck();
+            }
+
+            if (col_val == ""){
+                window.alert("Select a new value for the column");
+                return false;
+            }
+             return true;
+        }
+
+        function FnameCheck() {
+            let flag = true;
+            const fname = document.getElementById("col_val").value;
+            if (fname == "") {
+                alert("Please enter a first name");
+                flag = false;
+            }
+            if (fname.charAt(0) != fname.charAt(0).toUpperCase()) {
+                alert("First name must start with a capital letter");
+                flag = false;
+            }
+            const letters = /^[A-Za-z\s]+$/;
+            if (!(fname.match(letters))) {
+                flag = false;
+                window.alert("First name cannot contain spaces, numbers or special characters");
+            }
+            return flag;
+        }
+
+
+        function LnameCheck() {
+            const letters = /^[A-Za-z\s]+$/;
+            let flag = true;
+            const lname = document.getElementById("col_val").value;
+            if (lname == "") {
+                window.alert("Please enter a last name");
+                flag = false;
+            }
+            if (lname.charAt(0) != lname.charAt(0).toUpperCase()) {
+                window.alert("Last name must start with a capital letter");
+                flag = false;
+            }
+            if (!lname.match(letters)) {
+                flag = false;
+                window.alert("Last name cannot contain spaces or special characters");
+            }
+            return flag;
+        }
+
+
+        function UnameCheck() {
+            let flag = true;
+            const uname = document.getElementById("col_val").value;
+            if (uname.length < 4) {
+                flag = false;
+                window.alert("Username must be at least 4 characters long");
+            }
+            const nums_letters = /^[A-Za-z0-9]+$/;
+            if (!uname.match(nums_letters)) {
+                flag = false;
+                window.alert("Username must include only numbers and letters");
+            }
+            return flag;
+        }
+
+        function EmailCheck() {
+            let flag = true;
+            const email = document.getElementById("col_val").value;
+            const letters = /^[A-Za-z\s]+$/;
+            const mailformat = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
+            if (!email.match(mailformat)) {
+                window.alert("Email must start with a letter, contain an @ character and include a valid domain");
+                flag = false;
+            }
+            const fmail = email.charAt(0);
+            if (!fmail.match(letters)) {
+                window.alert("Email address must start with a letter");
+                flag = false;
+            }
+            return flag;
+        }
+
+        function PhoneCheck() {
+            let flag = true;
+            const phone = document.getElementById("col_val").value;
+            if (isNaN(phone)) {
+                window.alert("please enter a valid number as your phone number");
+                flag = false;
+            }
+            if (phone.length != 10) {
+                window.alert("Your phone number must be 10 digits long");
+                flag = false;
+            }
+            return flag;
+        }
+    </script>
 {% endblock %}
 
 {% block body_content %}
@@ -51,4 +199,42 @@
         </tr>
     {% endfor %}
 </table>
+<form method="post" action="" onsubmit="return checkForm()">
+    <p>
+        <label> Choose Table to delete from: </label><br />
+        User: <input type="radio" name="table" id="users_table" value="User"/>
+        Snake Scores: <input type="radio" name="table" id="snake_scores" value="SnakeScores" /><br />
+        Pong Scores: <input type="radio" name="table" id="pong_scores" value="PongScores" /><br />
+    </p>
+    <br />
+    <br />
+    <p>
+        <label for="del">Enter id of row to be deleted:</label>
+        <input type="text" id="del" name="del" value="" />
+    </p>
+    <br />
+    <br />
+    <p>
+        <label for="update_row"> Enter id of row to update in Users Table:</label>
+        <input type="text" name="update_row" id="update_row"/>
+    </p>
+    <br />
+    <p>
+        <label for="col_name"> Enter column to update in Users Table:</label>
+        <input type="text" name="col_name" id="col_name" />
+    </p>
+    <br />
+    <p>
+        <label for="col_val"> Enter new value: </label>
+        <input type="text" name="col_val" id="col_val" />
+    </p>
+    <br />
+    <br />
+    <p>
+        <label for="order"> Enter column by which to order the tables: </label>
+        <input type="text" name="order" id="order" value="1" />
+    </p>
+    <br />
+    <input type="submit" id="submit" name="submit" value="submit" />
+</form>
 {% endblock %}
