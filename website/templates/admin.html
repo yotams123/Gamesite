@@ -91,6 +91,11 @@
                 }
             }
 
+            if (del_table != undefined && del_row == ""){
+                window.alert('Choose row to delete');
+                return false;
+            }
+
             if (del_row != "" && del_table == undefined){
                 window.alert("Choose table to delete from");
                 return false;
