@@ -35,4 +35,38 @@
     if you haven't already, or <a href="login">log in</a> to play on your existing account!
     Have fun, and good luck!
 </p>
+<div id="pong_area">
+    <h3> Pong High Scores </h3>
+    <table>
+        <tr>
+            {% for header in columns_p%}
+                <th> {{ header }}</th>
+            {% endfor %}
+        </tr>
+        {% for row in data_p %}
+        <tr>
+            {% for column in columns_p %}
+                <td>{{ row[column] }}</td>
+            {% endfor %}
+        </tr>
+        {% endfor %}
+    </table>
+</div>
+<div id="snake_area">
+    <h3>Snake High Scores: </h3>
+    <table>
+        <tr>
+            {% for header in columns_s%}
+            <th> {{ header }}</th>
+            {% endfor %}
+        </tr>
+        {% for row in data_s %}
+        <tr>
+            {% for column in columns_s %}
+            <td>{{ row[column] }}</td>
+            {% endfor %}
+        </tr>
+        {% endfor %}
+    </table>
+</div>
 {% endblock %}
