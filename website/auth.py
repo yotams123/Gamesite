@@ -75,7 +75,7 @@ def my_account():
             if email != "":
                 update_user.email = email
             if birthday != "":
-                update_user.birthday = birthday
+                update_user.birthday = datetime.datetime.strptime(birthday, '%Y-%m-%d').date()
             if location != "":
                 update_user.location = location
             if gender != "":
