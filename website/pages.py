@@ -12,8 +12,10 @@ pages = flask.Blueprint("pages", __name__)
 def home():
     snake_columns = website.models.snake_columns
     snake_data = website.models.SnakeScores.query.all()
+
     pong_columns = website.models.pong_columns
     pong_data = website.models.PongScores.query.all()
+    
     return flask.render_template("home.html", user=flask_login.current_user, columns_s=snake_columns,
                                  data_s=snake_data, columns_p=pong_columns, data_p=pong_data)
 

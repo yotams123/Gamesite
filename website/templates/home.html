@@ -23,9 +23,18 @@
         font-weight: bold;
     }
 
+    h3 {
+        color: #9d0000;
+        margin:auto;
+        margin-top: 3%;
+        text-align: center;
+        font-weight: bold;
+    }
+
     table{
         border: 3px solid black;
-        width: 70%;
+        margin: auto;
+        margin-top: 3%;
     }
 
     table td,tr, th{
@@ -41,6 +50,19 @@
     table tr:nth-child(odd){
         color:green;
     }
+
+    .game_area{
+        width: 40%;
+        position: absolute;
+    }
+
+    #pong_area{
+        left: 5%
+    }
+
+    #snake_area{
+        right: 5%;
+    }
 </style>
 {% endblock %}
 
@@ -54,7 +76,7 @@
     if you haven't already, or <a href="login">log in</a> to play on your existing account!
     Have fun, and good luck!
 </p>
-<div id="pong_area">
+<div id="pong_area" class="game_area">
     <h3> Pong High Scores </h3>
     <table>
         <tr>
@@ -71,7 +93,7 @@
         {% endfor %}
     </table>
 </div>
-<div id="snake_area">
+<div id="snake_area" class="game_area">
     <h3>Snake High Scores: </h3>
     <table>
         <tr>
