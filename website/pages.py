@@ -2,6 +2,7 @@ import datetime
 
 import flask
 import flask_login
+import sqlalchemy.orm, sqlalchemy.exc
 
 import website.models
 
@@ -29,6 +30,27 @@ def admin():
             table = flask.request.form.get("table")
             table = eval(f"website.models.{table}")
             row = table.query.filter_by(id=flask.request.form.get("del")).first()
-            website.models.db.session.delete(row)
+            try:
+                website.models.db.session.delete(row)
+            except sqlalchemy.orm.exc.UnmappedInstanceError:
+                flask.flash("A row with that id does not exist in that table", category="error")
             website.models.db.session.commit()
+        if flask.request.form.get("update_row") is not "":
+            row = website.models.User.query.filter_by(id=flask.request.form.get("update_row")).first()
+            col = flask.request.form.get("col_name")
+            val = flask.request.form.get("col_val")
+            try:
+                if col == 'birthday':
+                    val = datetime.datetime.strptime(val, '%Y-%m-%d').date()
+                    exec(f"row.{col} = val")
+                else:
+                    exec(f"row.{col} = '{val}'")
+                website.models.db.session.commit()
+            except (sqlalchemy.orm.exc.UnmappedInstanceError, AttributeError, SyntaxError):
+                flask.flash("Invalid row or column", category="error")
+                website.models.db.session.rollback()
+            except ValueError:
+                flask.flash("The new value chosen is not a date. Enter a date in '%Y-%m-%d' format, "
+                            "as shown in the table", category="error")
+                website.models.db.session.rollback()
     return flask.render_template("admin.html", user=flask_login.current_user, data=data, users_columns=users_columns)
