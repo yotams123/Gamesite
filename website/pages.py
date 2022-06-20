@@ -27,7 +27,7 @@ def home():
                 pong_data = eval(f"website.models.PongScores.query.order_by(website.models.PongScores."
                                  f"{order_col}.{asc_desc}()).all()")
             except (SyntaxError, AttributeError) as error:
-                flask.flash(error, category="error")
+                flask.flash("Invalid column to order by", category="error")
 
     return flask.render_template("home.html", user=flask_login.current_user, columns_s=snake_columns,
                                  data_s=snake_data, columns_p=pong_columns, data_p=pong_data)
@@ -70,8 +70,8 @@ def admin():
 
         if order_col != "":
             try:
-                exec(f"data = website.models.User.query.order_by(website.models.User.{order_col}.{asc_desc}()).all()")
+                data = eval(f"website.models.User.query.order_by(website.models.User.{order_col}.{asc_desc}()).all()")
             except (SyntaxError, AttributeError) as error:
-                flask.flash("Column to order by is invalid", category="error")
+                flask.flash("Invalid column to order by", category="error")
     users_columns = website.models.user_columns
     return flask.render_template("admin.html", user=flask_login.current_user, data=data, users_columns=users_columns)

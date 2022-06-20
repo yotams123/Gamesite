@@ -53,24 +53,27 @@
 
     .game_area{
         width: 40%;
-        position: absolute;
     }
 
     #pong_area{
+        position: relative;
         left: 5%
     }
 
     #snake_area{
+        position: absolute;
+        top: 52%;
         right: 5%;
     }
 
      .end{
         text-align: center;
-        position: absolute;
-        left: 25%;
-        top: 85%;
+        margin: 3%;
     }
 
+    input{
+        margin: 1%;
+    }
     .input_text{
         color: #00007d;
     }
@@ -125,7 +128,7 @@
 </div>
 <form method="post" class="end input_text">
     <label for="order"> Enter column by which to order the table: </label>
-    <input type="text" name="order" id="order" />
+    <input type="text" name="order" id="order" /> <br>
     Ascending: <input type="radio" name="asc_desc" value="asc" checked>
     Descending: <input type="radio" name="asc_desc" value="desc">
     <br />
