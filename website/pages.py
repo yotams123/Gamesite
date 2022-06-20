@@ -9,13 +9,25 @@ import website.models
 pages = flask.Blueprint("pages", __name__)
 
 
-@pages.route('/')
+@pages.route('/', methods=['GET', 'POST'])
 def home():
-    snake_columns = website.models.snake_columns
-    snake_data = website.models.SnakeScores.query.order_by(website.models.SnakeScores.score.desc()).all()
-
-    pong_columns = website.models.pong_columns
     pong_data = website.models.PongScores.query.order_by(website.models.PongScores.score.desc()).all()
+    snake_data = website.models.SnakeScores.query.order_by(website.models.SnakeScores.score.desc()).all()
+    snake_columns = website.models.snake_columns
+    pong_columns = website.models.pong_columns
+
+    if flask.request.method == 'POST':
+        order_col = flask.request.form.get("order")
+        asc_desc = flask.request.form.get("asc_desc")
+
+        if order_col != "":
+            try:
+                snake_data = eval(f"website.models.SnakeScores.query.order_by(website.models.SnakeScores."
+                                  f"{order_col}.{asc_desc}()).all()")
+                pong_data = eval(f"website.models.PongScores.query.order_by(website.models.PongScores."
+                                 f"{order_col}.{asc_desc}()).all()")
+            except (SyntaxError, AttributeError) as error:
+                flask.flash(error, category="error")
 
     return flask.render_template("home.html", user=flask_login.current_user, columns_s=snake_columns,
                                  data_s=snake_data, columns_p=pong_columns, data_p=pong_data)

@@ -63,6 +63,17 @@
     #snake_area{
         right: 5%;
     }
+
+     .end{
+        text-align: center;
+        position: absolute;
+        left: 25%;
+        top: 85%;
+    }
+
+    .input_text{
+        color: #00007d;
+    }
 </style>
 {% endblock %}
 
@@ -112,4 +123,12 @@
         {% endfor %}
     </table>
 </div>
+<form method="post" class="end input_text">
+    <label for="order"> Enter column by which to order the table: </label>
+    <input type="text" name="order" id="order" />
+    Ascending: <input type="radio" name="asc_desc" value="asc" checked>
+    Descending: <input type="radio" name="asc_desc" value="desc">
+    <br />
+    <input type="submit" id="submit" name="submit" value="submit" />
+</form>
 {% endblock %}
