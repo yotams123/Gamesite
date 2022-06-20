@@ -24,7 +24,6 @@ def home():
 @pages.route('/admin', methods=['GET', 'POST'])
 def admin():
     data = website.models.User.query.all()
-    users_columns = website.models.user_columns
     if flask.request.method == 'POST':
         if flask.request.form.get('table') is not None:
             table = flask.request.form.get("table")
@@ -35,7 +34,7 @@ def admin():
             except sqlalchemy.orm.exc.UnmappedInstanceError:
                 flask.flash("A row with that id does not exist in that table", category="error")
             website.models.db.session.commit()
-        if flask.request.form.get("update_row") is not "":
+        if flask.request.form.get("update_row") != "":
             row = website.models.User.query.filter_by(id=flask.request.form.get("update_row")).first()
             col = flask.request.form.get("col_name")
             val = flask.request.form.get("col_val")
@@ -53,4 +52,14 @@ def admin():
                 flask.flash("The new value chosen is not a date. Enter a date in '%Y-%m-%d' format, "
                             "as shown in the table", category="error")
                 website.models.db.session.rollback()
+
+        order_col = flask.request.form.get("order")
+        asc_desc = flask.request.form.get("asc_desc")
+
+        if order_col != "":
+            try:
+                exec(f"data = website.models.User.query.order_by(website.models.User.{order_col}.{asc_desc}()).all()")
+            except (SyntaxError, AttributeError) as error:
+                flask.flash("Column to order by is invalid", category="error")
+    users_columns = website.models.user_columns
     return flask.render_template("admin.html", user=flask_login.current_user, data=data, users_columns=users_columns)
