@@ -50,6 +50,13 @@ def admin():
             row = website.models.User.query.filter_by(id=flask.request.form.get("update_row")).first()
             col = flask.request.form.get("col_name")
             val = flask.request.form.get("col_val")
+
+            for forbidden in ['\'', "\"", "\\", "#"]:
+                if forbidden in val:
+                    flask.flash("Invalid value", category="error")
+                    users_columns = website.models.user_columns
+                    return flask.render_template("admin.html", user=flask_login.current_user,
+                                                 data=data, users_columns=users_columns)
             try:
                 if col == 'birthday':
                     val = datetime.datetime.strptime(val, '%Y-%m-%d').date()

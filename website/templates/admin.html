@@ -50,7 +50,7 @@
     .end{
         text-align: center;
         position: absolute;
-        left: 25%;
+        left: 35%;
         top: 75%;
     }
 
@@ -129,7 +129,8 @@
                 window.alert("Select a new value for the column");
                 return false;
             }
-             return true;
+
+             return flag;
         }
 
         function FnameCheck() {
@@ -254,7 +255,11 @@
         <input type="text" name="update_row" id="update_row"/>
     <br />
         <label for="col_name"> Enter column to update in Users Table:</label>
-        <input type="text" name="col_name" id="col_name" />
+        <select name="col_name" id="col_name">
+            {% for col in users_columns[1:] %}
+                <option value={{col}}>{{col.upper()}}</option>
+            {% endfor %}
+        </select>
     <br />
         <label for="col_val"> Enter new value: </label>
         <input type="text" name="col_val" id="col_val" />
@@ -263,7 +268,11 @@
     <br />
     <div id="order_by_area" class="end input_text">
         <label for="order"> Enter column by which to order the table: </label>
-        <input type="text" name="order" id="order" /> <br>
+        <select name="order" id="order">
+            {% for col in users_columns[1:] %}
+            <option value={{col}}>{{col.upper()}}</option>
+            {% endfor %}
+        </select> <br>
         Ascending: <input type="radio" name="asc_desc" value="asc" checked>
         Descending: <input type="radio" name="asc_desc" value="desc">
     <br />
