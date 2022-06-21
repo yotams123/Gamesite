@@ -181,6 +181,18 @@
   Fill this form with new info to update account. All fields are optional.
   To keep a field the same as it was, leave empty
 </strong></h1>
+<table>
+  <tr>
+    {% for col in user_columns %}
+      <th>{{col}}</th>
+    {% endfor %}
+  </tr>
+  <tr>
+    {% for col in user_columns %}
+      <td>{{user[col]}}</td>
+    {% endfor %}
+  </tr>
+</table>
 <form id="update_form" name="update_form" method="post" action="" onsubmit="return checkForm()">
   <p id="form_body">
   <div class="input-group col-xs-4">

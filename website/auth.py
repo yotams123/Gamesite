@@ -52,6 +52,7 @@ def register():
 @auth.route('/my-account', methods=['GET', 'POST'])
 @flask_login.login_required
 def my_account():
+    user_columns = website.models.user_columns
     if flask.request.method == 'POST':
         if flask.request.form.get('submit'):
             firstname = flask.request.form.get("firstname")
@@ -85,4 +86,4 @@ def my_account():
         if flask.request.form.get('logout'):
             flask_login.logout_user()
             return flask.redirect(flask.url_for('auth.login'))
-    return flask.render_template("my_account.html", user=flask_login.current_user)
+    return flask.render_template("my_account.html", user=flask_login.current_user, user_columns=user_columns)
