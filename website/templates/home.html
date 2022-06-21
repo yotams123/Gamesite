@@ -127,8 +127,12 @@
     </table>
 </div>
 <form method="post" class="end input_text">
-    <label for="order"> Enter column by which to order the table: </label>
-    <input type="text" name="order" id="order" /> <br>
+    <label for="cols"> Enter column by which to order the table: </label>
+    <select id="cols" name="cols">
+        <option value="score"> Score </option>
+        <option value="date"> Date </option>
+        <option value="username"> Username </option>
+    </select>
     Ascending: <input type="radio" name="asc_desc" value="asc" checked>
     Descending: <input type="radio" name="asc_desc" value="desc">
     <br />

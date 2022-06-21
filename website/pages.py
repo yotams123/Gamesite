@@ -17,7 +17,7 @@ def home():
     pong_columns = website.models.pong_columns
 
     if flask.request.method == 'POST':
-        order_col = flask.request.form.get("order")
+        order_col = flask.request.form.get("cols")
         asc_desc = flask.request.form.get("asc_desc")
 
         if order_col != "":
