@@ -72,7 +72,7 @@
             <th> {{ header }}</th>
             {% endfor %}
         </tr>
-        {% for score in user.pong_scores %}
+        {% for score in data_p %}
         <tr>
             {% for column in columns_p %}
             <td>{{ score[column] }}</td>
@@ -89,7 +89,7 @@
             <th> {{ header }}</th>
             {% endfor %}
         </tr>
-        {% for score in user.snake_scores %}
+        {% for score in data_s %}
         <tr>
             {% for column in columns_s %}
             <td>{{ score[column] }}</td>
@@ -98,4 +98,15 @@
         {% endfor %}
     </table>
 </div>
+<form method="post" class="end input_text">
+    <label for="cols"> Enter column by which to order the table: </label>
+    <select id="cols" name="cols">
+        <option value="score"> Score </option>
+        <option value="date"> Date </option>
+    </select>
+    Ascending: <input type="radio" name="asc_desc" value="asc" checked>
+    Descending: <input type="radio" name="asc_desc" value="desc">
+    <br />
+    <input type="submit" id="submit" name="submit" value="submit" />
+</form>
 {% endblock %}

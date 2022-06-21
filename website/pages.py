@@ -21,13 +21,10 @@ def home():
         asc_desc = flask.request.form.get("asc_desc")
 
         if order_col != "":
-            try:
-                snake_data = eval(f"website.models.SnakeScores.query.order_by(website.models.SnakeScores."
-                                  f"{order_col}.{asc_desc}()).all()")
-                pong_data = eval(f"website.models.PongScores.query.order_by(website.models.PongScores."
-                                 f"{order_col}.{asc_desc}()).all()")
-            except (SyntaxError, AttributeError) as error:
-                flask.flash("Invalid column to order by", category="error")
+            snake_data = eval(f"website.models.SnakeScores.query.order_by(website.models.SnakeScores."
+                              f"{order_col}.{asc_desc}()).all()")
+            pong_data = eval(f"website.models.PongScores.query.order_by(website.models.PongScores."
+                             f"{order_col}.{asc_desc}()).all()")
 
     return flask.render_template("home.html", user=flask_login.current_user, columns_s=snake_columns,
                                  data_s=snake_data, columns_p=pong_columns, data_p=pong_data)
@@ -37,9 +34,21 @@ def home():
 @flask_login.login_required
 def my_scores():
     pong_columns = website.models.pong_columns
+    pong_data = website.models.PongScores.query.filter_by(username=flask_login.current_user.username)
+
     snake_columns = website.models.snake_columns
+    snake_data = website.models.SnakeScores.query.filter_by(username=flask_login.current_user.username)
+    if flask.request.method == 'POST':
+        order_col = flask.request.form.get("cols")
+        asc_desc = flask.request.form.get("asc_desc")
+
+        if order_col != "":
+            snake_data = eval(f"snake_data.order_by(website.models.SnakeScores.{order_col}.{asc_desc}())")
+            pong_data = eval(f"pong_data.order_by(website.models.PongScores.{order_col}.{asc_desc}())")
+        snake_data = snake_data.all()
+        pong_data = pong_data.all()
     return flask.render_template('my_scores.html', user=flask_login.current_user, columns_p=pong_columns,
-                                 columns_s=snake_columns)
+                                 columns_s=snake_columns, data_p=pong_data, data_s=snake_data)
 
 
 @pages.route('/admin', methods=['GET', 'POST'])

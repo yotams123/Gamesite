@@ -14,8 +14,8 @@ class User(db.Model, flask_login.UserMixin):
     location = db.Column(db.String(50), nullable=False)
     gender = db.Column(db.String(6), nullable=False)
 
-    snake_scores = db.relationship('SnakeScores', backref='user')
-    pong_scores = db.relationship('PongScores', backref='user')
+    snake_scores = db.relationship('SnakeScores', backref='user', lazy='dynamic')
+    pong_scores = db.relationship('PongScores', backref='user', lazy='dynamic')
 
 
 user_columns = ['id', 'first_name', 'last_name', 'username', 'email', 'birthday', 'location', 'gender']
