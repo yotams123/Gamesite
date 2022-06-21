@@ -33,8 +33,17 @@ def home():
                                  data_s=snake_data, columns_p=pong_columns, data_p=pong_data)
 
 
+@pages.route('/my_scores', methods=['GET', 'POST'])
+@flask_login.login_required
+def my_scores():
+    return flask.render_template('my_scores.html', user=flask_login.current_user)
+
+
 @pages.route('/admin', methods=['GET', 'POST'])
+@flask_login.login_required
 def admin():
+    if flask_login.current_user.username != "Ysman":
+        flask.redirect(flask.url_for("pages.home"))
     data = website.models.User.query.all()
     if flask.request.method == 'POST':
         if flask.request.form.get('table') is not None:
