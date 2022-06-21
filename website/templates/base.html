@@ -20,16 +20,12 @@
         {% block head_content %}
         {% endblock %}
     </div>
-
     <style>
         #user_display{
             color: {% if user.is_authenticated %} green {% else %} red {% endif %};
-            position: absolute;
-            right: 1%;
-            font-weight: bold;
-            font-size: large;
         }
     </style>
+    <link rel="stylesheet" href="../static/general.css">
 </head>
 <body>
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
