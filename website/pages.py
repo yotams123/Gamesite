@@ -36,7 +36,10 @@ def home():
 @pages.route('/my_scores', methods=['GET', 'POST'])
 @flask_login.login_required
 def my_scores():
-    return flask.render_template('my_scores.html', user=flask_login.current_user)
+    pong_columns = website.models.pong_columns
+    snake_columns = website.models.snake_columns
+    return flask.render_template('my_scores.html', user=flask_login.current_user, columns_p=pong_columns,
+                                 columns_s=snake_columns)
 
 
 @pages.route('/admin', methods=['GET', 'POST'])

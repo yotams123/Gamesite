@@ -1,7 +1,101 @@
 {% extends 'base.html' %}
 
 {% block head_content %}
+<style>
+    body{
+        background-color: #574B49;
+    }
+
+    h1 {
+        color:red;
+        margin:auto;
+        text-align: center;
+        font-weight: bold;
+    }
+
+    h3 {
+        color: #9d0000;
+        margin:auto;
+        margin-top: 3%;
+        text-align: center;
+        font-weight: bold;
+    }
+
+    table{
+        border: 3px solid black;
+        margin: auto;
+        margin-top: 3%;
+    }
+
+    table td,tr, th{
+        border: 1px solid grey;
+        text-align: center;
+        width: 7.5%;
+    }
+
+    table tr:nth-child(even){
+        color: #3769ff;
+    }
+
+    table tr:nth-child(odd){
+        color:green;
+    }
+
+    table th{
+        color: black;
+    }
+
+    .game_area{
+        width: 40%;
+    }
+
+    #pong_area{
+        position: relative;
+        left: 5%
+    }
+
+    #snake_area{
+        position: absolute;
+        top:19%;
+        right: 5%;
+    }
+</style>
 {% endblock %}
 
 {% block body_content %}
+<h1>Your Scores: </h1>
+<div id="pong_area" class="game_area">
+    <h3> Pong Scores </h3>
+    <table>
+        <tr>
+            {% for header in columns_p%}
+            <th> {{ header }}</th>
+            {% endfor %}
+        </tr>
+        {% for score in user.pong_scores %}
+        <tr>
+            {% for column in columns_p %}
+            <td>{{ score[column] }}</td>
+            {% endfor %}
+        </tr>
+        {% endfor %}
+    </table>
+</div>
+<div id="snake_area" class="game_area">
+    <h3>Snake Scores: </h3>
+    <table>
+        <tr>
+            {% for header in columns_s%}
+            <th> {{ header }}</th>
+            {% endfor %}
+        </tr>
+        {% for score in user.snake_scores %}
+        <tr>
+            {% for column in columns_s %}
+            <td>{{ score[column] }}</td>
+            {% endfor %}
+        </tr>
+        {% endfor %}
+    </table>
+</div>
 {% endblock %}
