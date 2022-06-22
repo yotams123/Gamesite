@@ -39,7 +39,7 @@
     }
 
 </style>
-    <script>
+<script>
         function checkForm(){
             const update_row = document.getElementById("update_row").value;
 
@@ -202,15 +202,15 @@
 <table>
     <tr>
         {% for column in users_columns %}
-            <th>{{column.upper()}}</th>
+        <th>{{column.upper()}}</th>
         {% endfor %}
     </tr>
     {% for row in data %}
-        <tr>
-            {% for column in users_columns %}
-                <td>{{row[column]}}</td>
-            {% endfor %}
-        </tr>
+    <tr>
+        {% for column in users_columns %}
+        <td>{{row[column]}}</td>
+        {% endfor %}
+    </tr>
     {% endfor %}
 </table>
 <form method="post" action="" onsubmit="return checkForm()">
@@ -229,14 +229,14 @@
     <div id="update_area" class="righter input_text">
         <label for="update_row"> Enter id of row to update in Users Table:</label>
         <input type="text" name="update_row" id="update_row"/>
-    <br />
+        <br />
         <label for="col_name"> Enter column to update in Users Table:</label>
         <select name="col_name" id="col_name">
             {% for col in users_columns[1:] %}
-                <option value={{col}}>{{col.upper()}}</option>
+            <option value={{col}}>{{col.upper()}}</option>
             {% endfor %}
         </select>
-    <br />
+        <br />
         <label for="col_val"> Enter new value: </label>
         <input type="text" name="col_val" id="col_val" />
     </div>
@@ -251,8 +251,8 @@
         </select> <br>
         Ascending: <input type="radio" name="asc_desc" value="asc" checked>
         Descending: <input type="radio" name="asc_desc" value="desc">
-    <br />
-    <input type="submit" id="submit" name="submit" value="submit" />
+        <br />
+        <input type="submit" id="submit" name="submit" value="submit" />
     </div>
 </form>
 {% endblock %}

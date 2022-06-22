@@ -2,7 +2,8 @@ import datetime
 
 import flask
 import flask_login
-import sqlalchemy.orm, sqlalchemy.exc
+import sqlalchemy.exc
+import sqlalchemy.orm
 
 import website.models
 
@@ -51,7 +52,7 @@ def my_scores():
                                  columns_s=snake_columns, data_p=pong_data, data_s=snake_data)
 
 
-@pages.route('/admin', methods=['GET', 'POST'])
+@pages.route('/admin', methods=['POST', 'GET'])
 @flask_login.login_required
 def admin():
     if flask_login.current_user.username != "Ysman":
@@ -99,7 +100,7 @@ def admin():
         if order_col != "":
             try:
                 data = eval(f"website.models.User.query.order_by(website.models.User.{order_col}.{asc_desc}()).all()")
-            except (SyntaxError, AttributeError) as error:
+            except (SyntaxError, AttributeError):
                 flask.flash("Invalid column to order by", category="error")
     users_columns = website.models.user_columns
-    return flask.render_template("admin.html", user=flask_login.current_user, data=data, users_columns=users_columns)
+    return flask.render_template("admin.html", user=flask_login.current_user, users_columns=users_columns, data=data)
