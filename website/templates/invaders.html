@@ -3,11 +3,16 @@
 {% block title %} Space Invaders {% endblock %}
 
 {% block head_content %}
-<script src="../static/invaders.js"></script>
+<style>
+    canvas{
+        background: black;
+    }
+</style>
 {% endblock %}
 
 {% block body_content %}
 <canvas>
 
 </canvas>
+<script src="../static/invaders.js"></script>
 {% endblock %}
