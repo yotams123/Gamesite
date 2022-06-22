@@ -1,12 +1,14 @@
 
 function Player(canvas){
-    this.position = {
-        x: 100,
-        y: 100
-    };
-
     this.height = 50;
     this.width = 50;
+
+    this.canvas = canvas;
+
+    this.position = {
+        x: (this.canvas.width-this.width)/2,
+        y: (this.canvas.height - this.height) * 0.9
+    };
 
     this.speed = {
         x: 3,
@@ -16,12 +18,10 @@ function Player(canvas){
     const image = new Image();
     image.src = "./static/img/spaceship.png";
     this.image = image;
+}
 
-    this.canvas = canvas;
-
-    this.draw = function(){
-        this.canvas.drawer.drawImage(this.image, this.position.x, this.position.y);
-    }
+Player.prototype.draw = function(){
+    this.canvas.drawer.drawImage(this.image, this.position.x, this.position.y, this.width, this.height);
 }
 
 function Canvas(){
