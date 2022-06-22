@@ -29,3 +29,8 @@ def pong():
         website.models.db.session.add(log)
         website.models.db.session.commit()
     return flask.render_template("pong.html", user=flask_login.current_user)
+
+
+@games.route('/space-invaders', methods=['GET', 'POST'])
+def space_invaders():
+    return flask.render_template("invaders.html", user=flask_login.current_user)
