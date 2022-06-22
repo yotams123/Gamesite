@@ -40,6 +40,18 @@ def my_scores():
     snake_columns = website.models.snake_columns
     snake_data = website.models.SnakeScores.query.filter_by(username=flask_login.current_user.username)
     if flask.request.method == 'POST':
+        if flask.request.form.get("del_row") != "":
+            row = int(flask.request.form.get("del_row"))
+            table = flask.request.form.get("table")
+            table = eval(f"website.models.{table}")
+            entry = table.query.filter_by(id=row).first()
+            try:
+                website.models.db.session.delete(entry)
+            except sqlalchemy.orm.exc.UnmappedInstanceError:
+                flask.flash("A row with that id does not exist", category="error")
+                print(type(row))
+                print(type(table.query.first().id))
+            website.models.db.session.commit()
         order_col = flask.request.form.get("cols")
         asc_desc = flask.request.form.get("asc_desc")
 
