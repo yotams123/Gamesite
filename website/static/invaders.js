@@ -1,9 +1,9 @@
 
 function Player(canvas){
-    this.height = 50;
-    this.width = 50;
-
     this.canvas = canvas;
+
+    this.height = this.canvas.height/9;
+    this.width = this.canvas.width/18;
 
     this.position = {
         x: (this.canvas.width-this.width)/2,
@@ -22,6 +22,25 @@ function Player(canvas){
 
 Player.prototype.draw = function(){
     this.canvas.drawer.drawImage(this.image, this.position.x, this.position.y, this.width, this.height);
+}
+
+Player.prototype.move= function(e){
+    this.canvas.drawer.clearRect(this.position.x, this.position.y, this.width, this.height);
+    keyId = e.charCode? e.charCode: e.which? e.which: e.keycode;
+    switch (keyId){
+        case 37: //left
+            this.position.x -= this.speed.x;
+            break;
+        case 38: //up
+            this.position.y -= this.speed.y;
+            break;
+        case 39: //right
+            this.position.x += this.speed.x;
+            break;
+        case 40: //down
+            this.position.y += this.speed.y;
+            break;
+    }
 }
 
 function Canvas(){
@@ -43,3 +62,4 @@ function run(){
 }
 
 run();
+document.addEventListener('keydown', function(e){player.move(e)})
