@@ -32,5 +32,6 @@ def pong():
 
 
 @games.route('/space-invaders', methods=['GET', 'POST'])
+@flask_login.login_required
 def space_invaders():
     return flask.render_template("invaders.html", user=flask_login.current_user)
