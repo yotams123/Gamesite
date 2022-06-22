@@ -11,7 +11,7 @@ function Player(canvas){
     };
 
     this.speed = {
-        x: 3,
+        x: 5,
         y: 3
     };
 
@@ -29,16 +29,26 @@ Player.prototype.move= function(e){
     keyId = e.charCode? e.charCode: e.which? e.which: e.keycode;
     switch (keyId){
         case 37: //left
-            this.position.x -= this.speed.x;
+            if (this.position.x - this.speed.x >= 0)    
+            {
+                this.position.x -= this.speed.x;
+            }
             break;
         case 38: //up
-            this.position.y -= this.speed.y;
+            if (this.position.y - this.speed.y >= 0){
+                    this.position.y -= this.speed.y;
+            }
             break;
         case 39: //right
-            this.position.x += this.speed.x;
+            if (this.position.x + this.speed.x + this.width <= this.canvas.width){
+                this.position.x += this.speed.x;
+            }
             break;
         case 40: //down
-            this.position.y += this.speed.y;
+            if (this.position.y + this.speed.y + this.height <= this.canvas.height)    
+            {
+                this.position.y += this.speed.y;
+            }
             break;
     }
 }
@@ -50,7 +60,7 @@ function Canvas(){
     this.drawer = canvas.getContext("2d");
 
     this.width = canvas.width = innerWidth * 0.7;
-    this.height = canvas.height = innerHeight * 0.8;
+    this.height = canvas.height = innerHeight * 0.7;
 }
 
 const canvas = new Canvas();
