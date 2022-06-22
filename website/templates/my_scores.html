@@ -16,7 +16,8 @@
     }
 
     #pong_area{
-        position: relative;
+        position: absolute;
+        top: 19%;
         left: 5%
     }
 
@@ -25,7 +26,40 @@
         top:19%;
         right: 5%;
     }
+
+    .end{
+        position: absolute;
+        text-align: center;
+        margin: 3% auto;
+        top: 60%;
+        left: 35%;
+    }
+
+    .input_text{
+        color: #00007d;
+    }
 </style>
+<script>
+    let checkForm = () =>
+    {
+        let del_row = document.getElementById("del_row").value;
+        let tables = document.getElementsByName("table");
+        let table = undefined;
+
+        for (let x of tables){
+            if (x.checked){
+                table = x.value;
+            }
+        }
+
+        console.log("table: " + table);
+        console.log("row: " + del_row);
+        if ((table != undefined && del_row == "") || (table == undefined && del_row != "")){
+            window.alert("Enter both table to delete from and row to delete");
+            return false;
+        }
+    }
+</script>
 {% endblock %}
 
 {% block body_content %}
@@ -64,13 +98,21 @@
         {% endfor %}
     </table>
 </div>
-<form method="post" class="end input_text">
+<form method="post" class="end input_text" onsubmit="return checkForm();">
+    <label for="del_row">Enter id of row to delete: </label>
+    <input type="number" id="del_row" min="1">
+    <br>
+    <label for="del_table">Enter table to delete from: </label>
+    Pong Scores: <input type="radio" name="table" id="pong_del" value="PongScores"> &emsp;
+    Snake Scores: <input type="radio" name="table" id="snake_del" value="SnakeScores">
+    <br>
+    <br>
     <label for="cols"> Enter column by which to order the table: </label>
     <select id="cols" name="cols">
         <option value="score"> Score </option>
         <option value="date"> Date </option>
-    </select>
-    Ascending: <input type="radio" name="asc_desc" value="asc" checked>
+    </select> <br>
+    Ascending: <input type="radio" name="asc_desc" value="asc" checked> &emsp;
     Descending: <input type="radio" name="asc_desc" value="desc">
     <br />
     <input type="submit" id="submit" name="submit" value="submit" />
