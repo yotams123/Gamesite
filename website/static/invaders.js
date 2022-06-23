@@ -154,6 +154,9 @@ function InvaderGrid(){
             this.invaders.push(new Invader(canvas, {x: this.position.x + o.width * j, y: this.position.y + o.height * i}));
         }
     }
+
+    this.topLeft = this.invaders[0];
+    this.topRight = this.invaders[this.cols - 1];
 }
 
 InvaderGrid.prototype.move = function(){
@@ -201,13 +204,22 @@ function run(){
         g.move();
         g.invaders.forEach((i, ind) => {
             for (let bullet of player.bullets){
-                console.log(i.length);
                 if ( i.position.y < bullet.position.y && bullet.position.y < i.position.y + i.height 
                     && i.position.x < bullet.position.x && bullet.position.x < i.position.x + i.width){
-                        i.clear();
-                        g.invaders.splice(ind, 1);
-                        bullet.destroy();
+                    i.clear();
+                    g.invaders.splice(ind, 1);
+                    bullet.destroy();
+
+                    if (i === g.topRight){
+                        g.cols --;
+                        g.topRight = g.invaders[g.cols];
                     }
+
+                    if (i === g.topLeft){
+                        g.cols --;
+                        g.topLeft = g.invaders[0];
+                    }
+                }
             }
         })
     }
