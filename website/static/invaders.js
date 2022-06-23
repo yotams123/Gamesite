@@ -140,8 +140,8 @@ function InvaderGrid(){
         y: 0
     };
 
-    this.cols = 5; //number of columns
-    this.rows = 2; //number of rows
+    this.cols = Math.floor(Math.random() * 7 + 3); //number of columns
+    this.rows = Math.floor(Math.random() * 4 + 1); //number of rows
 
     this.invaders = [];
     const o = new Invader(canvas, {x: 0, y: 0});
@@ -167,8 +167,7 @@ InvaderGrid.prototype.move = function(){
 
     const g = this;
     this.invaders.forEach(i => {i.position.x += g.speed.x;
-        i.position.y += g.speed.y;
-        console.log(g.speed.y);});
+        i.position.y += g.speed.y;});
     
     this.speed.y = 0;
     
@@ -177,13 +176,24 @@ InvaderGrid.prototype.move = function(){
 
 const canvas = new Canvas();
 const player = new Player(canvas);
-const grid = new InvaderGrid();
+const grids = [];
+
+let frames = 0;
 
 function run(){
     requestAnimationFrame(run);
     player.draw();
     player.bullets.forEach(bullet => bullet.move());
-    grid.move();
+    
+    if (frames % Math.floor((Math.random() * 500) + 1000) === 0){
+        grids.push(new InvaderGrid());
+    }
+
+    for (let g of grids){
+        g.move();
+    }
+
+    frames++;
 }
 
 run();
