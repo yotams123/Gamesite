@@ -7,14 +7,40 @@
     canvas{
         background: black;
         position: absolute;
-        left: 20%;
+        left: 28%;
         margin-top: 3%;
+        top: 17%;
+    }
+
+    h3{
+        float: left;
+        position: absolute;
+        left: 3%;
+        color: red;
+        font-family: "courier new";
+        font-weight: bold;
+    }
+
+    #ok_button{
+        position: absolute;
+        top: 30%;
+        left: 10%;
+        visibility: hidden;
+    }
+
+    #score {
+        visibility: hidden;
     }
 </style>
 {% endblock %}
 
 {% block body_content %}
 <h1>Space &nbsp; Invaders</h1>
+<h3 class="scoreDisplay">Your Current Score: 0</h3>
+<form method="post">
+    <input type="text" id="score" name="score">
+    <input type="submit" class="btn btn-primary" value="Submit Score" id="ok_button" name="ok_button">
+</form>
 <canvas></canvas>
 <script src="../static/invaders.js"></script>
 {% endblock %}

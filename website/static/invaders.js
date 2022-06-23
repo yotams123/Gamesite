@@ -189,6 +189,8 @@ let gridspeed = 1; // change the speed of each grid
 let interval = Math.floor((Math.random() * 500) + 500)
 let frames = 0;
 
+let score = 0;
+
 function run(){
     requestAnimationFrame(run);
     player.draw();
@@ -211,26 +213,25 @@ function run(){
                     i.clear();
                     g.invaders.splice(ind, 1);
                     bullet.destroy();
-
+                    
+                    score++;
+                    document.querySelector(".scoreDisplay").innerHTML = `Your Current Score: ${score}`;
                     if (i === g.topRight){
-                        g.cols --;
-                        g.topRight = g.invaders[g.cols];
+                        g.cols--;
+                        g.topRight = g.invaders[g.cols - 1];
                     }
 
                     if (i === g.topLeft){
-                        g.cols --;
+                        g.cols--;
                         if (g.invaders[0]){
                             g.topLeft = g.invaders[0];
-                            g.position.x = g.invaders[0].position.x;
+                            g.position.x = g.topLeft.position.x;
                         }
-=======
-                        g.topLeft = g.invaders[0];
-                        g.position.x = g.invaders[0].position.x;
->>>>>>> refs/remotes/origin/main
                     }
 
-                    if (g.invaders === []){
+                    if (g.invaders.length === 0){
                         grids.splice(grids.indexOf(g), 1);
+                        console.log("a");
                     }
                 }
             }
