@@ -99,10 +99,14 @@ Bullet.prototype.move = function(){
     this.canvas.drawer.fillStyle = this.color;
     this.canvas.drawer.fillRect(this.position.x, this.position.y, this.width, this.length);
     if (this.position.y <= 0){
-        this.canvas.drawer.clearRect(this.position.x - 1, 0, this.width + 2, this.length+ 2)
-        const index = this.player.bullets.indexOf(this);
-        this.player.bullets.splice(index, 1);
+        this.destroy();
     }
+}
+
+Bullet.prototype.destroy = function(){
+    this.canvas.drawer.clearRect(this.position.x - 1, this.position.y, this.width + 2, this.length+ 2)
+    const index = this.player.bullets.indexOf(this);
+    this.player.bullets.splice(index, 1);
 }
 
 function Invader(canvas, position){
@@ -155,7 +159,7 @@ function InvaderGrid(){
 InvaderGrid.prototype.move = function(){
     this.invaders.forEach(i => i.clear())  
     
-    const invader = this.invaders[0];
+    const invader = new Invader(canvas, {x: 0, y: 0});
     
     if (this.position.x <= 0 || this.position.x >= invader.canvas.width - invader.width * this.cols){
         this.speed.x *= -1;
@@ -178,6 +182,7 @@ const canvas = new Canvas();
 const player = new Player(canvas);
 const grids = [];
 
+let interval = Math.floor((Math.random() * 500) + 1000)
 let frames = 0;
 
 function run(){
@@ -185,12 +190,26 @@ function run(){
     player.draw();
     player.bullets.forEach(bullet => bullet.move());
     
-    if (frames % Math.floor((Math.random() * 500) + 1000) === 0){
+    if (frames %  interval === 0){
         grids.push(new InvaderGrid());
+        interval = Math.floor((Math.random() * 500) + 1000);
+
+        frames = 0;
     }
 
     for (let g of grids){
         g.move();
+        g.invaders.forEach((i, ind) => {
+            for (let bullet of player.bullets){
+                console.log(i.length);
+                if ( i.position.y < bullet.position.y && bullet.position.y < i.position.y + i.height 
+                    && i.position.x < bullet.position.x && bullet.position.x < i.position.x + i.width){
+                        i.clear();
+                        g.invaders.splice(ind, 1);
+                        bullet.destroy();
+                    }
+            }
+        })
     }
 
     frames++;
