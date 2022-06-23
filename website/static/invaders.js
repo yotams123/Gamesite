@@ -105,13 +105,85 @@ Bullet.prototype.move = function(){
     }
 }
 
+function Invader(canvas, position){
+    const image = new Image();
+    image.src = "../static/img/invader.png";
+    this.image = image;
+
+    this.canvas = canvas;
+
+    this.width = 40;
+    this.height = 40;
+
+    this.position = {
+        x: position.x,
+        y: position.y
+    };
+}
+
+Invader.prototype.clear = function(){
+    this.canvas.drawer.clearRect(this.position.x - 1, this.position.y - 1, this.width + 2, this.height + 2)
+}
+
+Invader.prototype.draw = function(){
+    this.canvas.drawer.drawImage(this.image, this.position.x, this.position.y, this.width, this.height);
+}
+
+function InvaderGrid(){
+    this.position= {
+        x: 10,
+        y: 0
+    };
+
+    this.speed = {
+        x: 1,
+        y: 0
+    };
+
+    this.cols = 5; //number of columns
+    this.rows = 2; //number of rows
+
+    this.invaders = [];
+    const o = new Invader(canvas, {x: 0, y: 0});
+    for (let i = 0; i<this.rows; i++){
+        for (let j = 0; j<this.cols; j++){
+            this.invaders.push(new Invader(canvas, {x: this.position.x + o.width * j, y: this.position.y + o.height * i}));
+        }
+    }
+}
+
+InvaderGrid.prototype.move = function(){
+    this.invaders.forEach(i => i.clear())  
+    
+    const invader = this.invaders[0];
+    
+    if (this.position.x <= 0 || this.position.x >= invader.canvas.width - invader.width * this.cols){
+        this.speed.x *= -1;
+        this.speed.y = invader.height;
+    }
+    
+    this.position.x += this.speed.x;
+    this.position.y += this.speed.y;
+
+    const g = this;
+    this.invaders.forEach(i => {i.position.x += g.speed.x;
+        i.position.y += g.speed.y;
+        console.log(g.speed.y);});
+    
+    this.speed.y = 0;
+    
+    this.invaders.forEach(i => i.draw());
+}
+
 const canvas = new Canvas();
 const player = new Player(canvas);
+const grid = new InvaderGrid();
 
 function run(){
     requestAnimationFrame(run);
     player.draw();
     player.bullets.forEach(bullet => bullet.move());
+    grid.move();
 }
 
 run();
