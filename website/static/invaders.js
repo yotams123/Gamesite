@@ -196,11 +196,8 @@ function run(){
     
     if (frames %  interval === 0){
         grids.push(new InvaderGrid(gridspeed));
-<<<<<<< HEAD
         interval = Math.floor((Math.random() * 500) + 250);
-=======
-        interval = Math.floor((Math.random() * 500) + 1000);
->>>>>>> refs/remotes/origin/main
+
         frames = 0;
         gridspeed++;
     }
@@ -222,7 +219,6 @@ function run(){
 
                     if (i === g.topLeft){
                         g.cols --;
-<<<<<<< HEAD
                         if (g.invaders[0]){
                             g.topLeft = g.invaders[0];
                             g.position.x = g.invaders[0].position.x;
