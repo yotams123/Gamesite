@@ -190,8 +190,14 @@ let interval = Math.floor((Math.random() * 500) + 500)
 let frames = 0;
 
 let score = 0;
+let active = true;
 
 function run(){
+    if (active == false){
+        
+        
+        return
+    }
     requestAnimationFrame(run);
     player.draw();
     player.bullets.forEach(bullet => bullet.move());
@@ -231,9 +237,22 @@ function run(){
 
                     if (g.invaders.length === 0){
                         grids.splice(grids.indexOf(g), 1);
-                        console.log("a");
                     }
                 }
+            }
+
+            if (i.position.y + i.height >= canvas.height){
+                active = false;
+                setTimeout(() => {
+                canvas.drawer.clearRect(0, 0, canvas.width, canvas.height);
+
+                canvas.drawer.font = '60px Courier New';
+                canvas.drawer.textAlign = 'center';
+                canvas.drawer.fillStyle = 'red'
+        
+                canvas.drawer.fillText("Game Over!", canvas.width/2, canvas.height * 0.35);
+                canvas.drawer.font = 'bold 30px Courier New';
+                canvas.drawer.fillText(`You Scored ${score} points`, canvas.width /2, canvas.height * 0.65);}, 3000);
             }
         })
     }
