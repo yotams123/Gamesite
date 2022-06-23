@@ -20,7 +20,7 @@ function Player(canvas){
     this.image = image;
 
     this.bullets = [];
-    this.maxBullets = 10;
+    this.maxBullets = 2;
 }
 
 Player.prototype.draw = function(){
@@ -29,7 +29,6 @@ Player.prototype.draw = function(){
 
 Player.prototype.spawnBullet = function() {
     this.bullets.push(new Bullet(this, this.canvas));
-    console.log("here");
 };
 
 Player.prototype.control= function(e){
@@ -91,14 +90,21 @@ function Bullet(player, canvas){
     this.color = "#ff0000";
 
     this.width = 2;
-    this.height = 10;
+    this.length = 10;
 }
 
 Bullet.prototype.move = function(){
-    this.canvas.drawer.clearRect(this.position.x - 1, this.position.y - 1, this.width + 2, this.height + 2);
+    this.canvas.drawer.clearRect(this.position.x - 1, this.position.y - 1, this.width + 2, this.length + 2);
     this.position.y -= this.speed; 
     this.canvas.drawer.fillStyle = this.color;
-    this.canvas.drawer.fillRect(this.position.x, this.position.y, this.width, this.height);
+    this.canvas.drawer.fillRect(this.position.x, this.position.y, this.width, this.length);
+    if (this.position.y <= 0){
+        this.canvas.drawer.clearRect(this.position.x - 1, 0, this.width + 2, this.length+ 2)
+        console.log(this.position.x)
+        const index = this.player.bullets.indexOf(this);
+        this.player.bullets.splice(index, 1);
+        console.log("width: " + this.width);
+    }
 }
 
 const canvas = new Canvas();
