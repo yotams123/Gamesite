@@ -18,13 +18,21 @@ function Player(canvas){
     const image = new Image();
     image.src = "./static/img/spaceship.png";
     this.image = image;
+
+    this.bullets = [];
+    this.maxBullets = 10;
 }
 
 Player.prototype.draw = function(){
     this.canvas.drawer.drawImage(this.image, this.position.x, this.position.y, this.width, this.height);
 }
 
-Player.prototype.move= function(e){
+Player.prototype.spawnBullet = function() {
+    this.bullets.push(new Bullet(this, this.canvas));
+    console.log("here");
+};
+
+Player.prototype.control= function(e){
     this.canvas.drawer.clearRect(this.position.x, this.position.y, this.width, this.height);
     keyId = e.charCode? e.charCode: e.which? e.which: e.keycode;
     switch (keyId){
@@ -50,6 +58,11 @@ Player.prototype.move= function(e){
                 this.position.y += this.speed.y;
             }
             break;
+        case 32:
+            if (this.bullets.length < this.maxBullets){
+                this.spawnBullet();
+            }
+            break;
     }
 }
 
@@ -63,13 +76,41 @@ function Canvas(){
     this.height = canvas.height = innerHeight * 0.7;
 }
 
+function Bullet(player, canvas){
+
+    this.player = player;
+    this.canvas = canvas;
+
+    this.position = {
+        x: player.position.x,
+        y: player.position.y
+    };
+
+    this.speed = 7;
+
+    this.color = "#ff0000";
+
+    this.width = 2;
+    this.height = 10;
+}
+
+Bullet.prototype.move = function(){
+    this.canvas.drawer.clearRect(this.position.x - 1, this.position.y - 1, this.width + 2, this.height + 2);
+    this.position.y -= this.speed; 
+    this.canvas.drawer.fillStyle = this.color;
+    this.canvas.drawer.fillRect(this.position.x, this.position.y, this.width, this.height);
+}
+
 const canvas = new Canvas();
 const player = new Player(canvas);
 
 function run(){
     requestAnimationFrame(run);
     player.draw();
+    for (let bullet of player.bullets){
+        bullet.move();
+    }
 }
 
 run();
-document.addEventListener('keydown', function(e){player.move(e)})
+document.addEventListener('keydown', function(e){player.control(e)})
