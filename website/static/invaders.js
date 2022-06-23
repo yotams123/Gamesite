@@ -133,14 +133,14 @@ Invader.prototype.draw = function(){
     this.canvas.drawer.drawImage(this.image, this.position.x, this.position.y, this.width, this.height);
 }
 
-function InvaderGrid(){
+function InvaderGrid(xspeed){
     this.position= {
         x: 10,
         y: 0
     };
 
     this.speed = {
-        x: 1,
+        x: xspeed,
         y: 0
     };
 
@@ -185,7 +185,8 @@ const canvas = new Canvas();
 const player = new Player(canvas);
 const grids = [];
 
-let interval = Math.floor((Math.random() * 500) + 1000)
+let gridspeed = 1; // change the speed of each grid
+let interval = Math.floor((Math.random() * 500) + 500)
 let frames = 0;
 
 function run(){
@@ -194,10 +195,10 @@ function run(){
     player.bullets.forEach(bullet => bullet.move());
     
     if (frames %  interval === 0){
-        grids.push(new InvaderGrid());
+        grids.push(new InvaderGrid(gridspeed));
         interval = Math.floor((Math.random() * 500) + 1000);
-
         frames = 0;
+        gridspeed++;
     }
 
     for (let g of grids){
@@ -218,6 +219,11 @@ function run(){
                     if (i === g.topLeft){
                         g.cols --;
                         g.topLeft = g.invaders[0];
+                        g.position.x = g.invaders[0].position.x;
+                    }
+
+                    if (g.invaders === []){
+                        grids.splice(grids.indexOf(g), 1);
                     }
                 }
             }
