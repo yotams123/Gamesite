@@ -81,7 +81,7 @@ function Bullet(player, canvas){
     this.canvas = canvas;
 
     this.position = {
-        x: player.position.x,
+        x: player.position.x + player.width/2,
         y: player.position.y
     };
 
@@ -100,10 +100,8 @@ Bullet.prototype.move = function(){
     this.canvas.drawer.fillRect(this.position.x, this.position.y, this.width, this.length);
     if (this.position.y <= 0){
         this.canvas.drawer.clearRect(this.position.x - 1, 0, this.width + 2, this.length+ 2)
-        console.log(this.position.x)
         const index = this.player.bullets.indexOf(this);
         this.player.bullets.splice(index, 1);
-        console.log("width: " + this.width);
     }
 }
 
@@ -113,9 +111,7 @@ const player = new Player(canvas);
 function run(){
     requestAnimationFrame(run);
     player.draw();
-    for (let bullet of player.bullets){
-        bullet.move();
-    }
+    player.bullets.forEach(bullet => bullet.move());
 }
 
 run();
