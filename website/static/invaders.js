@@ -144,7 +144,8 @@ function InvaderGrid(xspeed){
         y: 0
     };
 
-    this.cols = Math.floor(Math.random() * 7 + 3); //number of columns
+    this.cols = Math.floor(Math.random() * 7 + 3); // current number of columns
+    this.maxCols = this.cols; // maximum number of columns
     this.rows = Math.floor(Math.random() * 4 + 1); //number of rows
 
     this.invaders = [];
@@ -164,7 +165,7 @@ InvaderGrid.prototype.move = function(){
     
     const invader = new Invader(canvas, {x: 0, y: 0});
     
-    if (this.position.x <= 0 || this.position.x >= invader.canvas.width - invader.width * this.cols){
+    if (this.position.x <= 0 || this.position.x >= invader.canvas.width - invader.width * this.maxCols){
         this.speed.x *= -1;
         this.speed.y = invader.height;
     }
@@ -216,18 +217,25 @@ function run(){
             for (let bullet of player.bullets){
                 if ( i.position.y < bullet.position.y && bullet.position.y < i.position.y + i.height 
                     && i.position.x < bullet.position.x && bullet.position.x < i.position.x + i.width){
+                    
                     i.clear();
-                    g.invaders.splice(ind, 1);
                     bullet.destroy();
                     
                     score++;
                     document.querySelector(".scoreDisplay").innerHTML = `Your Current Score: ${score}`;
-                    if (i === g.topRight){
+                    document.getElementById("score").value = score;
+                    
+                    g.invaders.splice(ind, 1);
+                    if (ind < g.cols){ // if the invader was in the top row
+                        g.cols--;
+                    }
+
+                    if (i === g.topRight){  // accounting for new grid width
                         g.cols--;
                         g.topRight = g.invaders[g.cols - 1];
                     }
 
-                    if (i === g.topLeft){
+                    if (i === g.topLeft){ // accounting for new grid width
                         g.cols--;
                         if (g.invaders[0]){
                             g.topLeft = g.invaders[0];
@@ -253,7 +261,7 @@ function run(){
                 canvas.drawer.fillText("Game Over!", canvas.width/2, canvas.height * 0.35);
                 canvas.drawer.font = 'bold 30px Courier New';
                 canvas.drawer.fillText(`You Scored ${score} points`, canvas.width /2, canvas.height * 0.65);
-            
+
                 document.getElementById("ok_button").style.visibility = "visible";}, 3000);
             }
         })
