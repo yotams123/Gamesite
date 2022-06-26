@@ -252,7 +252,9 @@ function run(){
         
                 canvas.drawer.fillText("Game Over!", canvas.width/2, canvas.height * 0.35);
                 canvas.drawer.font = 'bold 30px Courier New';
-                canvas.drawer.fillText(`You Scored ${score} points`, canvas.width /2, canvas.height * 0.65);}, 3000);
+                canvas.drawer.fillText(`You Scored ${score} points`, canvas.width /2, canvas.height * 0.65);
+            
+                document.getElementById("ok_button").style.visibility = "visible";}, 3000);
             }
         })
     }
