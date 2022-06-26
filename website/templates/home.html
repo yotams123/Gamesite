@@ -20,24 +20,16 @@
         font-weight: bold;
     }
 
-    .game_area{
-        width: 40%;
-    }
-
     #pong_area{
         position: relative;
-        left: 5%
-    }
-
-    #snake_area{
-        position: absolute;
-        top: 52%;
-        right: 5%;
+        left: 5%;
+        width: 40%;
     }
 
      .end{
         text-align: center;
         margin: 3%;
+        width: 45%;
     }
 
     input{
@@ -47,6 +39,13 @@
     .input_text{
         color: #00007d;
     }
+
+    .right_area{
+        position: absolute;
+        top: 52%;
+        left: 55%;
+        width: 40%;
+    }
 </style>
 {% endblock %}
 
@@ -55,14 +54,14 @@
     Welcome to Gamesite!
 </h1>
 <p id="about">
-    Here, you can play arcade style mini games, such as 'Snake' and 'Pong', and compare
+    Here, you can play arcade style mini-games, such as 'Snake' and 'Pong', and compare
     your score to that of people all over the world! To play, you only have to <a href="register"> sign up </a>
     if you haven't already, or <a href="login">log in</a> to play on your existing account!
     For now, here are the all-time high scores on this site. Who knows, maybe you'll find yourself here eventually.
     <br>
     Have fun, and good luck!
 </p>
-<div id="pong_area" class="game_area">
+<div id="pong_area">
     <h3> Pong High Scores </h3>
     <table>
         <tr>
@@ -79,39 +78,41 @@
         {% endfor %}
     </table>
 </div>
-<div id="snake_area" class="game_area">
-    <h3>Snake High Scores: </h3>
-    <table>
-        <tr>
-            {% for header in columns%}
-            <th> {{ header }}</th>
-            {% endfor %}
-        </tr>
-        {% for row in data_s %}
-        <tr>
-            {% for column in columns %}
-            <td>{{ row[column] }}</td>
-            {% endfor %}
-        </tr>
-        {% endfor %}
-    </table>
-</div>
-<div id="invaders_area" class="game_area">
-    <h3>Space Invaders High Scores:</h3>
-    <table>
-        <tr>
-            {% for header in columns %}
-                <th>{{header}}</th>
-            {% endfor %}
-        </tr>
-        {% for row in data_i %}
+<div class="right_area">
+    <div id="snake_area">
+        <h3>Snake High Scores: </h3>
+        <table>
             <tr>
-                {% for column in columns %}
-                    <td>{{ row[column] }}</td>
+                {% for header in columns%}
+                <th> {{ header }}</th>
                 {% endfor %}
             </tr>
-        {% endfor %}
-    </table>
+            {% for row in data_s %}
+            <tr>
+                {% for column in columns %}
+                <td>{{ row[column] }}</td>
+                {% endfor %}
+            </tr>
+            {% endfor %}
+        </table>
+    </div>
+    <div id="invaders_area">
+        <h3>Space Invaders High Scores:</h3>
+        <table>
+            <tr>
+                {% for header in columns %}
+                    <th>{{header}}</th>
+                {% endfor %}
+            </tr>
+            {% for row in data_i %}
+                <tr>
+                    {% for column in columns %}
+                        <td>{{ row[column] }}</td>
+                    {% endfor %}
+                </tr>
+            {% endfor %}
+        </table>
+    </div>
 </div>
 <form method="post" class="end input_text">
     <label for="cols"> Enter column by which to order the tables: &emsp; </label>
