@@ -96,8 +96,25 @@
         {% endfor %}
     </table>
 </div>
+<div id="invaders_area" class="game_area">
+    <h3>Space Invaders High Scores:</h3>
+    <table>
+        <tr>
+            {% for header in columns %}
+                <th>{{header}}</th>
+            {% endfor %}
+        </tr>
+        {% for row in data_i %}
+            <tr>
+                {% for column in columns %}
+                    <td>{{ row[column] }}</td>
+                {% endfor %}
+            </tr>
+        {% endfor %}
+    </table>
+</div>
 <form method="post" class="end input_text">
-    <label for="cols"> Enter column by which to order the table: </label>
+    <label for="cols"> Enter column by which to order the tables: &emsp; </label>
     <select id="cols" name="cols">
         <option value="score"> Score </option>
         <option value="date"> Date </option>

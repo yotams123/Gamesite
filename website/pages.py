@@ -14,6 +14,7 @@ pages = flask.Blueprint("pages", __name__)
 def home():
     pong_data = website.models.PongScores.query.order_by(website.models.PongScores.score.desc()).all()
     snake_data = website.models.SnakeScores.query.order_by(website.models.SnakeScores.score.desc()).all()
+    invaders_data = website.models.SpaceInvadersScores.query.order_by(website.models.SpaceInvadersScores.score.desc()).all()
 
     columns = website.models.columns
 
@@ -26,9 +27,11 @@ def home():
                               f"{order_col}.{asc_desc}()).all()")
             pong_data = eval(f"website.models.PongScores.query.order_by(website.models.PongScores."
                              f"{order_col}.{asc_desc}()).all()")
+            invaders_data = eval(f"website.models.SpaceInvadersScores.query.order_by(website.models.PongScores."
+                                 f"{order_col}.{asc_desc}()).all()")
 
     return flask.render_template("home.html", user=flask_login.current_user, columns=columns,
-                                 data_s=snake_data, data_p=pong_data)
+                                 data_s=snake_data, data_p=pong_data, data_i=invaders_data)
 
 
 @pages.route('/my_scores', methods=['GET', 'POST'])
@@ -38,28 +41,40 @@ def my_scores():
 
     pong_data = website.models.PongScores.query.filter_by(username=flask_login.current_user.username)
     snake_data = website.models.SnakeScores.query.filter_by(username=flask_login.current_user.username)
+    invaders_data = website.models.SpaceInvadersScores.query.filter_by(username=flask_login.current_user.username)
+
     if flask.request.method == 'POST':
+
         if flask.request.form.get("del_row") != "":
             row = int(flask.request.form.get("del_row"))
             table = flask.request.form.get("table")
             table = eval(f"website.models.{table}")
             entry = table.query.filter_by(id=row).first()
+
             try:
                 website.models.db.session.delete(entry)
+
             except sqlalchemy.orm.exc.UnmappedInstanceError:
                 flask.flash("A row with that id does not exist", category="error")
                 print(type(row))
                 print(type(table.query.first().id))
+
             website.models.db.session.commit()
+
         order_col = flask.request.form.get("cols")
         asc_desc = flask.request.form.get("asc_desc")
 
         if order_col != "":
             snake_data = eval(f"snake_data.order_by(website.models.SnakeScores.{order_col}.{asc_desc}())")
             pong_data = eval(f"pong_data.order_by(website.models.PongScores.{order_col}.{asc_desc}())")
+            invaders_data = eval(f"invaders_data.order_by(website.models.SpaceInvadersScores.{order_col}.{asc_desc}())")
+
         snake_data = snake_data.all()
         pong_data = pong_data.all()
-    return flask.render_template('my_scores.html', user=flask_login.current_user, columns=columns, data_p=pong_data, data_s=snake_data)
+        invaders_data = invaders_data.all()
+
+    return flask.render_template('my_scores.html', user=flask_login.current_user, columns=columns, data_p=pong_data,
+                                 data_s=snake_data, data_i=invaders_data)
 
 
 @pages.route('/admin', methods=['POST', 'GET'])
