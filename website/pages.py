@@ -14,8 +14,8 @@ pages = flask.Blueprint("pages", __name__)
 def home():
     pong_data = website.models.PongScores.query.order_by(website.models.PongScores.score.desc()).all()
     snake_data = website.models.SnakeScores.query.order_by(website.models.SnakeScores.score.desc()).all()
-    snake_columns = website.models.snake_columns
-    pong_columns = website.models.pong_columns
+
+    columns = website.models.columns
 
     if flask.request.method == 'POST':
         order_col = flask.request.form.get("cols")
@@ -27,17 +27,16 @@ def home():
             pong_data = eval(f"website.models.PongScores.query.order_by(website.models.PongScores."
                              f"{order_col}.{asc_desc}()).all()")
 
-    return flask.render_template("home.html", user=flask_login.current_user, columns_s=snake_columns,
-                                 data_s=snake_data, columns_p=pong_columns, data_p=pong_data)
+    return flask.render_template("home.html", user=flask_login.current_user, columns=columns,
+                                 data_s=snake_data, data_p=pong_data)
 
 
 @pages.route('/my_scores', methods=['GET', 'POST'])
 @flask_login.login_required
 def my_scores():
-    pong_columns = website.models.pong_columns
-    pong_data = website.models.PongScores.query.filter_by(username=flask_login.current_user.username)
+    columns = website.models.columns
 
-    snake_columns = website.models.snake_columns
+    pong_data = website.models.PongScores.query.filter_by(username=flask_login.current_user.username)
     snake_data = website.models.SnakeScores.query.filter_by(username=flask_login.current_user.username)
     if flask.request.method == 'POST':
         if flask.request.form.get("del_row") != "":
@@ -60,8 +59,7 @@ def my_scores():
             pong_data = eval(f"pong_data.order_by(website.models.PongScores.{order_col}.{asc_desc}())")
         snake_data = snake_data.all()
         pong_data = pong_data.all()
-    return flask.render_template('my_scores.html', user=flask_login.current_user, columns_p=pong_columns,
-                                 columns_s=snake_columns, data_p=pong_data, data_s=snake_data)
+    return flask.render_template('my_scores.html', user=flask_login.current_user, columns=columns, data_p=pong_data, data_s=snake_data)
 
 
 @pages.route('/admin', methods=['POST', 'GET'])

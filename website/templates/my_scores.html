@@ -68,13 +68,13 @@
     <h3> Pong Scores </h3>
     <table>
         <tr>
-            {% for header in columns_p%}
+            {% for header in columns%}
             <th> {{ header }}</th>
             {% endfor %}
         </tr>
         {% for score in data_p %}
         <tr>
-            {% for column in columns_p %}
+            {% for column in columns %}
             <td>{{ score[column] }}</td>
             {% endfor %}
         </tr>
@@ -85,13 +85,13 @@
     <h3>Snake Scores: </h3>
     <table>
         <tr>
-            {% for header in columns_s%}
+            {% for header in columns%}
             <th> {{ header }}</th>
             {% endfor %}
         </tr>
         {% for score in data_s %}
         <tr>
-            {% for column in columns_s %}
+            {% for column in columns %}
             <td>{{ score[column] }}</td>
             {% endfor %}
         </tr>

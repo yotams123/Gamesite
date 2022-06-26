@@ -28,7 +28,7 @@ class SnakeScores(db.Model):
     date = db.Column(db.DateTime(), default=sqlalchemy.sql.func.now())
 
 
-snake_columns = ['id', 'username', 'score', 'date']
+columns = ['id', 'username', 'score', 'date']
 
 
 class PongScores(db.Model):
@@ -38,4 +38,8 @@ class PongScores(db.Model):
     date = db.Column(db.DateTime(), default=sqlalchemy.sql.func.now(), nullable=False)
 
 
-pong_columns = ['id', 'username', 'score', 'date']
+class SpaceInvadersScores(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    username = db.Column(db.String(50), db.ForeignKey('user.username'), nullable=False)
+    score = db.Column(db.Integer, nullable=False)
+    date = db.Column(db.DateTime(), default=sqlalchemy.sql.func.now(), nullable=False)
