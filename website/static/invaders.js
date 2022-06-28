@@ -145,7 +145,6 @@ function InvaderGrid(xspeed){
     };
 
     this.cols = Math.floor(Math.random() * 7 + 3); // current number of columns
-    this.maxCols = this.cols; // maximum number of columns
     this.rows = Math.floor(Math.random() * 4 + 1); //number of rows
 
     this.invaders = [];
@@ -165,7 +164,7 @@ InvaderGrid.prototype.move = function(){
     
     const invader = new Invader(canvas, {x: 0, y: 0});
     
-    if (this.position.x <= 0 || this.position.x >= invader.canvas.width - invader.width * this.maxCols){
+    if (this.position.x <= 0 || this.topRight.position.x + invader.width >= canvas.width){
         this.speed.x *= -1;
         this.speed.y = invader.height;
     }
@@ -230,17 +229,13 @@ function run(){
                         g.cols--;
                     }
 
-                    if (i === g.topRight){  // accounting for new grid width
-                        g.cols--;
+                    if (i === g.topRight && g.invaders.length != 0){  // accounting for new grid width
                         g.topRight = g.invaders[g.cols - 1];
                     }
 
-                    if (i === g.topLeft){ // accounting for new grid width
-                        g.cols--;
-                        if (g.invaders[0]){
-                            g.topLeft = g.invaders[0];
-                            g.position.x = g.topLeft.position.x;
-                        }
+                    if (i === g.topLeft && g.invaders[0]){ // accounting for new grid width
+                        g.topLeft = g.invaders[0];
+                        g.position.x = g.topLeft.position.x;
                     }
 
                     if (g.invaders.length === 0){
