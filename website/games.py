@@ -2,7 +2,7 @@ import flask
 import flask_login
 import datetime
 
-import website.models
+from website.models import *
 
 games = flask.Blueprint("games", __name__)
 
@@ -12,9 +12,9 @@ games = flask.Blueprint("games", __name__)
 def snake():
     if flask.request.method == 'POST':
         score = flask.request.form.get('score')
-        log = website.models.SnakeScores(username=flask_login.current_user.username, score=score)
-        website.models.db.session.add(log)
-        website.models.db.session.commit()
+        log = SnakeScores(username=flask_login.current_user.username, score=score)
+        db.session.add(log)
+        db.session.commit()
     return flask.render_template("snake.html", user=flask_login.current_user)
 
 
@@ -23,9 +23,9 @@ def snake():
 def pong():
     if flask.request.method == 'POST':
         score = flask.request.form.get('score')
-        log = website.models.PongScores(username=flask_login.current_user.username, score=score)
-        website.models.db.session.add(log)
-        website.models.db.session.commit()
+        log = PongScores(username=flask_login.current_user.username, score=score)
+        db.session.add(log)
+        db.session.commit()
     return flask.render_template("pong.html", user=flask_login.current_user)
 
 
@@ -34,7 +34,7 @@ def pong():
 def space_invaders():
     if flask.request.method == 'POST':
         score = flask.request.form.get('score')
-        log = website.models.SpaceInvadersScores(username=flask_login.current_user.username, score=score)
-        website.models.db.session.add(log)
-        website.models.db.session.commit()
+        log = SpaceInvadersScores(username=flask_login.current_user.username, score=score)
+        db.session.add(log)
+        db.session.commit()
     return flask.render_template("invaders.html", user=flask_login.current_user)
