@@ -43,3 +43,6 @@ class SpaceInvadersScores(db.Model):
     username = db.Column(db.String(50), db.ForeignKey('user.username'), nullable=False)
     score = db.Column(db.Integer, nullable=False)
     date = db.Column(db.DateTime(), default=sqlalchemy.sql.func.now(), nullable=False)
+
+
+models = ["SpaceInvadersScores", "PongScores", "SnakeScores", "User"]
