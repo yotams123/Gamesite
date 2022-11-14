@@ -179,12 +179,12 @@
 </strong></h1>
 <table>
   <tr>
-    {% for col in user_columns %}
+    {% for col in user_columns[1:] %}
       <th>{{col}}</th>
     {% endfor %}
   </tr>
   <tr>
-    {% for col in user_columns %}
+    {% for col in user_columns[1:] %}
       <td>{{user[col]}}</td>
     {% endfor %}
   </tr>

@@ -76,8 +76,10 @@ def my_scores():
 @pages.route('/admin', methods=['POST', 'GET'])
 @flask_login.login_required
 def admin():
+
+    admins = ["Ysman", "YotamS123"]
     users_columns = user_columns
-    if flask_login.current_user.username != "Ysman":
+    if flask_login.current_user.username not in admins:
         flask.redirect(flask.url_for("pages.home"))
     data = User.query.all()
     if flask.request.method == 'POST':
